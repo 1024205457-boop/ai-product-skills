@@ -1,0 +1,4 @@
+interface:
+  display_name: "Private Domain AI Workflow"
+  short_description: "Design private-domain AI content workflows."
+  default_prompt: "Design a private-domain AI content workflow for this scenario."

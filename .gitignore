@@ -1,0 +1,19 @@
+.DS_Store
+
+# Keep this repository text/script only.
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.svg
+*.heic
+*.pdf
+*.docx
+*.xlsx
+*.pptx
+
+# Local/generated files.
+agent_eval_template.csv
+*.log
+__pycache__/

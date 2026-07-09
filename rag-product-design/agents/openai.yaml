@@ -1,0 +1,4 @@
+interface:
+  display_name: "RAG Product Design"
+  short_description: "Design RAG and AI search product flows."
+  default_prompt: "Design a RAG or AI search product plan for this scenario."

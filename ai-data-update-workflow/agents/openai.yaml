@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Data Update Workflow"
+  short_description: "Run safe AI-assisted data update workflows."
+  default_prompt: "Design or execute a safe AI-assisted data update workflow."

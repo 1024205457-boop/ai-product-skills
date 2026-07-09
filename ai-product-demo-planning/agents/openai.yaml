@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Product Demo Planning"
+  short_description: "Plan AI product demos for portfolios."
+  default_prompt: "Plan a portfolio-ready AI product demo for this job direction."
