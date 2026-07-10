@@ -1,4 +1,0 @@
-interface:
-  display_name: "Agent Workflow Design"
-  short_description: "Design controllable AI Agent workflows."
-  default_prompt: "Design an Agent workflow for this product scenario."

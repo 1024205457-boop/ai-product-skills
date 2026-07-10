@@ -1,0 +1,5 @@
+interface:
+  display_name: "RAG Shopping Guide Agent"
+  short_description: "Build grounded AI shopping-guide flows that avoid fabricated facts and surface decision risks."
+  default_prompt: "Design a grounded shopping-guide Agent for this product category, including need parsing, retrieval fields, risk checks, output format, and evaluation criteria."
+

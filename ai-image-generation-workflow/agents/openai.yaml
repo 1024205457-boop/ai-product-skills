@@ -1,4 +1,0 @@
-interface:
-  display_name: "AI Image Generation Workflow"
-  short_description: "Design batch AI image generation workflows."
-  default_prompt: "Design a batch AI image generation workflow for this content scenario."

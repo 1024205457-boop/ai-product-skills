@@ -1,0 +1,5 @@
+interface:
+  display_name: "Single Agent Tool Orchestration"
+  short_description: "Design constrained single-Agent workflows with tools, events, TODOs, memory, and redlines."
+  default_prompt: "Design a single-Agent plus tools workflow for this scenario, including stages, tool contracts, TODOs, memory boundaries, and redline fallbacks."
+

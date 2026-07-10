@@ -1,4 +1,0 @@
-interface:
-  display_name: "Business Process Automation PRD"
-  short_description: "Write PRDs for AI workflow automation."
-  default_prompt: "Turn this manual business process into an AI workflow automation PRD."

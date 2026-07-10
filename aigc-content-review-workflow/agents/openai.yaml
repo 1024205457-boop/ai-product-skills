@@ -1,4 +1,0 @@
-interface:
-  display_name: "AIGC Content Review Workflow"
-  short_description: "Design AIGC generation and review workflows."
-  default_prompt: "Design an AIGC content generation and review workflow for this product."

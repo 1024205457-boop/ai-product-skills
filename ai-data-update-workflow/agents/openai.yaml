@@ -1,4 +1,4 @@
 interface:
   display_name: "AI Data Update Workflow"
-  short_description: "Run safe AI-assisted data update workflows."
-  default_prompt: "Design or execute a safe AI-assisted data update workflow."
+  short_description: "Run safe data updates with source validation, scoped writes, read-back checks, and anomaly notes."
+  default_prompt: "Design or execute a safe data update workflow with source checks, scoped writes, read-back verification, and anomaly reporting."
