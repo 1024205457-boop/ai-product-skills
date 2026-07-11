@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build pivot-style Excel summaries from raw memory and operation log CSV files.
+"""Build pivot-style Excel summaries from raw user-state and touch-history CSV files.
 
 This script is intentionally small and explicit so beginners can adapt the
 field names to their own exports.
@@ -13,8 +13,8 @@ from pathlib import Path
 import pandas as pd
 
 
-MEMORY_REQUIRED = {
-    "memory_id",
+STATE_REQUIRED = {
+    "state_id",
     "user_id",
     "created_at",
     "scene",
@@ -23,8 +23,8 @@ MEMORY_REQUIRED = {
     "tags",
 }
 
-LOG_REQUIRED = {
-    "log_id",
+TOUCH_REQUIRED = {
+    "touch_id",
     "user_id",
     "created_at",
     "operator",
@@ -33,11 +33,10 @@ LOG_REQUIRED = {
 }
 
 
-def require_columns(frame: pd.DataFrame, required: set[str], name: str) -> list[str]:
+def require_columns(frame: pd.DataFrame, required: set[str], name: str) -> None:
     missing = sorted(required - set(frame.columns))
     if missing:
         raise SystemExit(f"{name} missing columns: {missing}")
-    return sorted(required)
 
 
 def add_date(frame: pd.DataFrame, source_name: str) -> pd.DataFrame:
@@ -62,39 +61,39 @@ def filter_period(frame: pd.DataFrame, start: str | None, end: str | None) -> pd
     return frame.loc[mask].copy()
 
 
-def build_memory_by_scene(memory: pd.DataFrame) -> pd.DataFrame:
-    grouped = memory.groupby(["date", "scene"], dropna=False)
+def build_state_by_scene(state: pd.DataFrame) -> pd.DataFrame:
+    grouped = state.groupby(["date", "scene"], dropna=False)
     result = grouped.agg(
-        memory_count=("memory_id", "nunique"),
+        state_count=("state_id", "nunique"),
         active_users=("user_id", "nunique"),
         high_intent_users=(
             "user_id",
-            lambda s: s[memory.loc[s.index, "intent_level"].eq("high")].nunique(),
+            lambda s: s[state.loc[s.index, "intent_level"].eq("high")].nunique(),
         ),
         risk_users=(
             "user_id",
-            lambda s: s[memory.loc[s.index, "risk_flag"].astype(str).isin(["1", "true", "True"])].nunique(),
+            lambda s: s[state.loc[s.index, "risk_flag"].astype(str).isin(["1", "true", "True"])].nunique(),
         ),
     )
     return result.reset_index()
 
 
-def build_logs_by_operator(logs: pd.DataFrame) -> pd.DataFrame:
+def build_touch_by_operator(touch: pd.DataFrame) -> pd.DataFrame:
     pivot = pd.pivot_table(
-        logs,
+        touch,
         index=["date", "operator", "channel"],
         columns="event_type",
-        values="log_id",
+        values="touch_id",
         aggfunc="nunique",
         fill_value=0,
     )
     pivot.columns = [str(col) for col in pivot.columns]
-    pivot["total_logs"] = pivot.sum(axis=1)
+    pivot["total_touch"] = pivot.sum(axis=1)
     return pivot.reset_index()
 
 
-def build_tag_frequency(memory: pd.DataFrame) -> pd.DataFrame:
-    tag_rows = memory[["date", "scene", "user_id", "tags"]].copy()
+def build_tag_frequency(state: pd.DataFrame) -> pd.DataFrame:
+    tag_rows = state[["date", "scene", "user_id", "tags"]].copy()
     tag_rows["tag"] = tag_rows["tags"].fillna("").astype(str).str.split(",")
     tag_rows = tag_rows.explode("tag")
     tag_rows["tag"] = tag_rows["tag"].str.strip()
@@ -109,45 +108,45 @@ def build_tag_frequency(memory: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def build_quality_checks(memory: pd.DataFrame, logs: pd.DataFrame) -> pd.DataFrame:
+def build_quality_checks(state: pd.DataFrame, touch: pd.DataFrame) -> pd.DataFrame:
     rows = [
-        {"check": "memory_rows", "value": len(memory)},
-        {"check": "log_rows", "value": len(logs)},
-        {"check": "memory_users", "value": memory["user_id"].nunique()},
-        {"check": "log_users", "value": logs["user_id"].nunique()},
-        {"check": "duplicate_memory_id", "value": memory["memory_id"].duplicated().sum()},
-        {"check": "duplicate_log_id", "value": logs["log_id"].duplicated().sum()},
-        {"check": "memory_date_min", "value": memory["date"].min() if len(memory) else ""},
-        {"check": "memory_date_max", "value": memory["date"].max() if len(memory) else ""},
-        {"check": "log_date_min", "value": logs["date"].min() if len(logs) else ""},
-        {"check": "log_date_max", "value": logs["date"].max() if len(logs) else ""},
+        {"check": "state_rows", "value": len(state)},
+        {"check": "touch_rows", "value": len(touch)},
+        {"check": "state_users", "value": state["user_id"].nunique()},
+        {"check": "touch_users", "value": touch["user_id"].nunique()},
+        {"check": "duplicate_state_id", "value": state["state_id"].duplicated().sum()},
+        {"check": "duplicate_touch_id", "value": touch["touch_id"].duplicated().sum()},
+        {"check": "state_date_min", "value": state["date"].min() if len(state) else ""},
+        {"check": "state_date_max", "value": state["date"].max() if len(state) else ""},
+        {"check": "touch_date_min", "value": touch["date"].min() if len(touch) else ""},
+        {"check": "touch_date_max", "value": touch["date"].max() if len(touch) else ""},
     ]
     return pd.DataFrame(rows)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--memory", required=True, help="Raw memory CSV path")
-    parser.add_argument("--logs", required=True, help="Raw operation log CSV path")
-    parser.add_argument("--output", default="memory_log_pivot.xlsx", help="Output Excel path")
+    parser.add_argument("--state", required=True, help="Raw user-state CSV path")
+    parser.add_argument("--touch", required=True, help="Raw touch-history CSV path")
+    parser.add_argument("--output", default="detail_pivot.xlsx", help="Output Excel path")
     parser.add_argument("--start", help="Inclusive start date, e.g. 2026-07-01")
     parser.add_argument("--end", help="Inclusive end date, e.g. 2026-07-07")
     args = parser.parse_args()
 
-    memory = pd.read_csv(args.memory)
-    logs = pd.read_csv(args.logs)
-    require_columns(memory, MEMORY_REQUIRED, "memory")
-    require_columns(logs, LOG_REQUIRED, "logs")
+    state = pd.read_csv(args.state)
+    touch = pd.read_csv(args.touch)
+    require_columns(state, STATE_REQUIRED, "state")
+    require_columns(touch, TOUCH_REQUIRED, "touch")
 
-    memory = filter_period(add_date(memory, "memory"), args.start, args.end)
-    logs = filter_period(add_date(logs, "logs"), args.start, args.end)
+    state = filter_period(add_date(state, "state"), args.start, args.end)
+    touch = filter_period(add_date(touch, "touch"), args.start, args.end)
 
     output = Path(args.output)
     with pd.ExcelWriter(output) as writer:
-        build_memory_by_scene(memory).to_excel(writer, sheet_name="memory_by_scene", index=False)
-        build_logs_by_operator(logs).to_excel(writer, sheet_name="logs_by_operator", index=False)
-        build_tag_frequency(memory).to_excel(writer, sheet_name="tag_frequency", index=False)
-        build_quality_checks(memory, logs).to_excel(writer, sheet_name="quality_checks", index=False)
+        build_state_by_scene(state).to_excel(writer, sheet_name="state_by_scene", index=False)
+        build_touch_by_operator(touch).to_excel(writer, sheet_name="touch_by_operator", index=False)
+        build_tag_frequency(state).to_excel(writer, sheet_name="tag_frequency", index=False)
+        build_quality_checks(state, touch).to_excel(writer, sheet_name="quality_checks", index=False)
 
     print(f"Wrote {output}")
 

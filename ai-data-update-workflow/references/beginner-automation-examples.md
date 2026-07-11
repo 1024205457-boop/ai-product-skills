@@ -2,7 +2,7 @@
 
 This reference is for beginners who currently update reports by opening exports, making pivot tables, and copying numbers into a weekly dashboard.
 
-If the source data is AI product memory records or detailed operation logs, read `memory-log-to-pivot-script.md` first. That file is the primary example for turning raw memory/log data into pivot-style output tables. This file only gives smaller beginner patterns.
+If the source data is user-state records or detailed touch-history rows, read `raw-detail-to-pivot-script.md` first. That file is the primary example for turning raw detail data into pivot-style output tables. This file only gives smaller beginner patterns.
 
 ## Example 1: Replace a Pivot Table With a Script
 
@@ -108,7 +108,7 @@ What this replaces:
 
 ## Example 2: Read Detailed Diary Logs
 
-Some products do not only have event rows. They also have diary-like operation logs, such as "teacher called parent", "student missed class", or "user complained".
+Some products do not only have event rows. They also have diary-like detail records, such as "teacher called parent", "student missed class", or "user complained".
 
 ### Mock Diary Data
 

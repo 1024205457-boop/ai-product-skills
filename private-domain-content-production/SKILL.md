@@ -26,6 +26,10 @@ Use this when AI is used to produce messages or images for private-domain operat
    - CTA.
    - forbidden claims.
    - frequency limit.
+   - topic cycle.
+   - seasonal context.
+   - recent touch history.
+   - dedupe keys.
 3. Generate copy and visual concepts in batches.
 4. Review:
    - factual accuracy.
@@ -63,3 +67,4 @@ Read:
 
 - `references/content-review-gates.md` for review checkpoints.
 - `references/copy-splitting-and-generation-boundaries.md` for a beginner-friendly example of how to split one source copy into code fields, rotating templates, and AI-generated variants.
+- `references/batch-generation-variables.md` for a batch-generation example that combines provided copy facts, user state, touch history, topic cycles, seasonal variables, dedupe, and frequency control.

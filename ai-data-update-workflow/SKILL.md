@@ -39,7 +39,7 @@ Choose the simplest path that matches the real source:
 2. **API/Cookie path:** use only when the internal system has stable request endpoints and the operator can provide a short-lived cookie/token securely. Never commit cookies.
 3. **Playwright path:** use when there is no API and data must be downloaded from a web UI. Use it to log in, click export, and save a file; do not let it blindly edit dashboards without read-back checks.
 
-For beginner automation, first replace manual pivot tables with a script that reads raw memory/log rows and outputs pivot-like summary tables. Only automate writing back after the generated pivot output is trusted.
+For beginner automation, first replace manual pivot tables with a script that reads raw detail rows and outputs pivot-like summary tables. Only automate writing back after the generated pivot output is trusted.
 
 If the main question is whether to use API/Cookie or Playwright, use the separate `api-vs-playwright-automation` skill.
 
@@ -57,6 +57,6 @@ Use:
 
 - `scripts/check_csv_quality.py` for basic CSV quality checks.
 - `references/safety-rules.md` for guardrails.
-- `references/beginner-automation-examples.md` for a mock-data example that replaces a pivot table and reads diary-like logs.
-- `references/memory-log-to-pivot-script.md` when the user needs to turn raw memory records and operation logs into an automatically generated pivot table.
-- `scripts/build_memory_log_pivot.py` as a starter script for generating Excel pivot-style summary sheets from raw memory/log CSV files.
+- `references/beginner-automation-examples.md` for a mock-data example that replaces a pivot table and reads text-detail records.
+- `references/raw-detail-to-pivot-script.md` when the user needs to turn raw user-state tables and touch-history tables into an automatically generated pivot table.
+- `scripts/build_detail_pivot.py` as a starter script for generating Excel pivot-style summary sheets from raw detail CSV files.
