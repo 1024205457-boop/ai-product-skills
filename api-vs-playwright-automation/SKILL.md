@@ -65,9 +65,15 @@ Playwright login/export -> raw CSV -> validation script -> summary CSV -> manual
 
 This is often safer than letting Playwright directly edit dashboards.
 
+## Capture First, Automate Second
+
+Before writing code, capture how the current page gets data:
+
+- **API path:** use browser DevTools Network to find the request, copy it as cURL, then translate it into a small script.
+- **Playwright path:** use Playwright codegen or manual locator inspection to record the UI steps, then simplify selectors and add download/read-back checks.
+
 ## References
 
 - Read `references/api-cookie-path.md` when the source has a visible API request, export endpoint, or cookie-based session.
 - Read `references/playwright-path.md` when the workflow depends on browser UI, downloads, SSO, screenshots, or selectors.
 - Read `references/path-decision-table.md` when comparing both approaches for a product/design document.
-

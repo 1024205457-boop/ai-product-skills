@@ -2,6 +2,8 @@
 
 This reference is for beginners who currently update reports by opening exports, making pivot tables, and copying numbers into a weekly dashboard.
 
+If the source data is AI product memory records or detailed operation logs, read `memory-log-to-pivot-script.md` first. That file is the primary example for turning raw memory/log data into pivot-style output tables. This file only gives smaller beginner patterns.
+
 ## Example 1: Replace a Pivot Table With a Script
 
 ### Mock Raw Data
@@ -229,4 +231,3 @@ After writing:
 - Compare read-back with summary CSV.
 - Add anomaly notes.
 - Report exactly what changed.
-

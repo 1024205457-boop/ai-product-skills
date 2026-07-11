@@ -26,6 +26,90 @@ Use this path when the reliable workflow is browser-based: login, choose filters
 7. Run deterministic validation/aggregation script.
 ```
 
+## How to Capture the UI Workflow
+
+Use this when a beginner asks "how do I write the Playwright script?"
+
+### Option A: Playwright codegen
+
+```bash
+npx playwright codegen https://example.com/report
+```
+
+Then manually perform the workflow:
+
+1. log in if needed.
+2. open the report page.
+3. select date range.
+4. click query.
+5. click export.
+
+Codegen will produce draft locators. Treat this as a starting point, not final code.
+
+Clean up generated code:
+
+- replace fragile CSS selectors with `getByRole`, `getByLabel`, or `getByText`.
+- remove unnecessary waits.
+- add `waitForEvent("download")` before export click.
+- add screenshot after filters are applied.
+- save downloaded raw file before processing.
+
+### Option B: Manual locator inspection
+
+Use DevTools or Playwright Inspector to identify stable UI handles:
+
+```bash
+PWDEBUG=1 node export_report.js
+```
+
+Prefer locators like:
+
+```js
+await page.getByLabel("Start date").fill("2026-07-01");
+await page.getByRole("button", { name: "Export" }).click();
+await page.getByText("No data").isVisible();
+```
+
+Avoid:
+
+```js
+await page.locator("div:nth-child(4) > span > button").click();
+```
+
+## Login State Options
+
+For internal tools, login often decides whether Playwright is practical.
+
+### Manual login each run
+
+Best for first prototype:
+
+```text
+1. launch headful browser.
+2. let operator log in manually.
+3. press Enter in terminal.
+4. script continues export.
+```
+
+### Save storage state
+
+Use after the first prototype works:
+
+```js
+await context.storageState({ path: "storage-state.json" });
+```
+
+Next run:
+
+```js
+const context = await browser.newContext({
+  acceptDownloads: true,
+  storageState: "storage-state.json",
+});
+```
+
+Never commit `storage-state.json`; it may contain cookies or tokens.
+
 ## Minimal Node Skeleton
 
 ```js
@@ -99,4 +183,3 @@ For beginners, Playwright should usually stop at export/download. If it must wri
 4. Compare with source summary.
 5. Stop on first mismatch.
 ```
-

@@ -25,6 +25,81 @@ Use this path when the system has a stable endpoint and the task can be represen
 7. Script outputs summary CSV and anomaly notes.
 ```
 
+## How to Capture the API Request
+
+Use this when a beginner asks "how do I know which API to call?"
+
+1. Open Chrome DevTools.
+2. Go to the **Network** tab.
+3. Filter by **Fetch/XHR**.
+4. Clear old requests.
+5. On the page, perform the exact manual action:
+   - choose date range.
+   - choose filters.
+   - click query/export.
+6. Click the request that appears.
+7. Check:
+   - **Request URL:** endpoint path.
+   - **Payload/Query String:** date, page, filters, IDs.
+   - **Response/Preview:** whether it contains the table data.
+   - **Headers:** auth header, cookie, content type.
+8. Right-click the request and choose **Copy as cURL**.
+9. Save the cURL in a private local note, then convert it to a script.
+
+Do not paste production cookies into public docs, prompts, commits, or screenshots.
+
+## What to Look For in Network
+
+Good API candidates:
+
+- URL includes words like `report`, `list`, `query`, `export`, `search`, `metrics`.
+- Response is JSON or CSV.
+- Parameters are readable: `startDate`, `endDate`, `page`, `size`, `channel`.
+- Replaying the request returns the same data.
+
+Bad API candidates:
+
+- Response is HTML shell, not data.
+- Request requires one-time encrypted signature.
+- Payload is binary or unreadable.
+- Request only returns a task ID and needs more polling you do not understand yet.
+
+## Convert cURL to Script
+
+Example sanitized cURL:
+
+```bash
+curl 'https://example.com/api/report?start=2026-07-01&end=2026-07-07' \
+  -H 'accept: application/json' \
+  -H 'cookie: SESSION=replace-at-runtime'
+```
+
+Translate it into requests:
+
+```python
+import os
+import requests
+
+cookie = os.environ["REPORT_COOKIE"]
+
+resp = requests.get(
+    "https://example.com/api/report",
+    params={"start": "2026-07-01", "end": "2026-07-07"},
+    headers={
+        "accept": "application/json",
+        "cookie": cookie,
+    },
+    timeout=30,
+)
+resp.raise_for_status()
+data = resp.json()
+```
+
+Keep only necessary headers. Many copied browser headers are noise:
+
+- usually keep: `authorization`, `cookie`, `content-type`, `accept`.
+- usually remove: `sec-ch-ua`, `sec-fetch-*`, `user-agent`, `referer`, tracking headers, browser-only headers.
+
 ## Credential Handling
 
 Good:
@@ -102,4 +177,3 @@ print(f"Saved {len(rows)} rows to {args.output}")
 - Cookie expires too quickly for repeat runs.
 - Terms or permissions do not allow scripted access.
 - The task depends on visual UI state that the API does not expose.
-
