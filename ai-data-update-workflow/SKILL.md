@@ -31,6 +31,18 @@ Use AI as an operator with guardrails. The lesson: data updates look simple, but
 6. Compare against previous period and flag large changes.
 7. Report normal metrics, anomalies, pending confirmations, and completed steps.
 
+## Beginner Implementation Paths
+
+Choose the simplest path that matches the real source:
+
+1. **CSV/XLSX export path:** safest for beginners. Export raw data, run a local script to aggregate it, then paste or write the result.
+2. **API/Cookie path:** use only when the internal system has stable request endpoints and the operator can provide a short-lived cookie/token securely. Never commit cookies.
+3. **Playwright path:** use when there is no API and data must be downloaded from a web UI. Use it to log in, click export, and save a file; do not let it blindly edit dashboards without read-back checks.
+
+For beginner automation, first replace manual pivot tables with a script that reads raw rows and outputs a summary CSV. Only automate writing back after the summary is trusted.
+
+If the main question is whether to use API/Cookie or Playwright, use the separate `api-vs-playwright-automation` skill.
+
 ## Pitfall Checks
 
 - Is the date range exactly the requested one?
@@ -41,4 +53,8 @@ Use AI as an operator with guardrails. The lesson: data updates look simple, but
 - Did the read-back match the intended output?
 - Is every abnormal movement explained or explicitly marked unknown?
 
-Use `scripts/check_csv_quality.py` for basic CSV quality checks. Read `references/safety-rules.md` for guardrails.
+Use:
+
+- `scripts/check_csv_quality.py` for basic CSV quality checks.
+- `references/safety-rules.md` for guardrails.
+- `references/beginner-automation-examples.md` for a mock-data example that replaces a pivot table and reads diary-like logs.

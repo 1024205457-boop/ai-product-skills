@@ -1,0 +1,4 @@
+interface:
+  display_name: "API vs Playwright Automation"
+  short_description: "Choose and design API/Cookie or Playwright scripts for safe report exports, updates, and browser automation."
+  default_prompt: "Help me decide whether this automation should use an API/Cookie script or Playwright, then provide a beginner-friendly implementation path with validation checks."

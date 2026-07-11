@@ -40,6 +40,16 @@ Use this when AI is used to produce messages or images for private-domain operat
    - follow-up message.
 6. Export with a human-readable review sheet and track usage/performance.
 
+## Implementation Split
+
+For a given approved copy, explicitly split the workflow into three parts:
+
+1. **Code-inserted facts:** user name, class name, deadline, coupon amount, activity link, teacher name, opt-out text. These should come from CRM/export tables and be inserted by code.
+2. **Rotating templates:** opening line, CTA wording, reminder angle, emoji/no-emoji style, send-time batch. These can be selected from a controlled template pool.
+3. **AI free generation:** rewrite tone, produce 3-5 variants, adapt to channel length, summarize a long source note into short copy. AI must not invent prices, deadlines, promises, or user-specific facts.
+
+When writing a plan, include a field map and a generation boundary table. Do not only say "AI generates private-domain copy".
+
 ## Pitfall Checks
 
 - Is the content useful to the recipient, or only convenient for the operator?
@@ -49,5 +59,7 @@ Use this when AI is used to produce messages or images for private-domain operat
 - Are claims traceable to approved facts?
 - Is there a frequency or opt-out rule?
 
-Read `references/content-review-gates.md` for review checkpoints.
+Read:
 
+- `references/content-review-gates.md` for review checkpoints.
+- `references/copy-splitting-and-generation-boundaries.md` for a beginner-friendly example of how to split one source copy into code fields, rotating templates, and AI-generated variants.
