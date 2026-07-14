@@ -1,4 +1,4 @@
 interface:
-  display_name: "单 Agent 工具编排"
+  display_name: "单 Agent 工作流"
   short_description: "用阶段、事件、工具契约、记忆边界和红线规则约束单 Agent 工作流。"
   default_prompt: "帮我把这个业务流程设计成单 Agent 加工具的工作流，明确阶段、事件、工具契约、TODO、记忆边界和转人工规则。"

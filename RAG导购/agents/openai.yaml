@@ -1,0 +1,4 @@
+interface:
+  display_name: "RAG 导购"
+  short_description: "构建有事实依据的导购能力，避免编造价格、库存、链接和风险信息。"
+  default_prompt: "帮我设计一个有依据的 RAG 导购流程：解析用户需求，检索商品事实，输出推荐、对比、风险提示和缺失信息。"

@@ -1,9 +1,9 @@
 ---
-name: single-agent-tool-orchestration
+name: single-agent-workflow
 description: 设计或审查单 Agent 加工具的工作流，让模型推理受阶段、业务事件、定时跟进、事实数据源和红线转人工规则约束。适用于 Agent 架构、工具调用规则、事件/TODO 设计、记忆边界，或解释为什么某个流程不是多 Agent。
 ---
 
-# 单 Agent 工具编排
+# 单 Agent 工作流
 
 当 Agent 需要完成业务流程，而不只是聊天时，使用这个 skill。核心经验是：不要让模型每一轮都自由决定从零调用什么工具。要给它一个轻量编排层：阶段、事件、工具契约、状态记忆和红线兜底。
 
