@@ -11,7 +11,7 @@ This repository is intentionally sanitized. It contains reusable workflows, scri
 | `single-agent-tool-orchestration` | Design single-Agent workflows constrained by stages, events, tools, TODOs, memory, and redlines. |
 | `rag-shopping-guide-agent` | Build grounded shopping-guide Agents that explain recommendations without fabricating facts. |
 | `private-domain-content-production` | Build AI copy/image production workflows with review, dedupe, channel adaptation, and frequency control. |
-| `ai-data-update-workflow` | Run safe AI-assisted data updates with source validation, scoped writes, read-back checks, and anomaly notes. |
+| `数据更新工作流` | Run safe AI-assisted data updates with source validation, cleaning rules, pivot-table generation, scoped writes, read-back checks, and anomaly notes. |
 | `api-vs-playwright-automation` | Decide whether to automate with API/Cookie scripts or Playwright, then design beginner-friendly export/update scripts with validation. |
 
 ## Repository Principles
