@@ -8,11 +8,11 @@ This repository is intentionally sanitized. It contains reusable workflows, scri
 
 | Skill | Use it for |
 | --- | --- |
-| `single-agent-tool-orchestration` | Design single-Agent workflows constrained by stages, events, tools, TODOs, memory, and redlines. |
-| `rag-shopping-guide-agent` | Build grounded shopping-guide Agents that explain recommendations without fabricating facts. |
-| `private-domain-content-production` | Build AI copy/image production workflows with review, dedupe, channel adaptation, and frequency control. |
+| `API与Playwright自动化` | Decide whether to automate with API/Cookie scripts or Playwright, then design beginner-friendly export/update scripts with validation. |
+| `RAG导购Agent` | Build grounded shopping-guide Agents that explain recommendations without fabricating facts. |
+| `单Agent工具编排` | Design single-Agent workflows constrained by stages, events, tools, TODOs, memory, and redlines. |
 | `数据更新工作流` | Run safe AI-assisted data updates with source validation, cleaning rules, pivot-table generation, scoped writes, read-back checks, and anomaly notes. |
-| `api-vs-playwright-automation` | Decide whether to automate with API/Cookie scripts or Playwright, then design beginner-friendly export/update scripts with validation. |
+| `私域内容生产` | Build AI copy/image production workflows with review, dedupe, channel adaptation, and frequency control. |
 
 ## Repository Principles
 
@@ -27,7 +27,7 @@ This repository is intentionally sanitized. It contains reusable workflows, scri
 Install or copy a skill folder into your Codex skills directory, then ask Codex to use the relevant skill:
 
 ```text
-Use the rag-shopping-guide-agent skill to design a grounded recommendation flow for this ecommerce scenario.
+Use the RAG导购Agent skill to design a grounded recommendation flow for this ecommerce scenario.
 ```
 
 For portfolio use, link this repository as evidence that AI product work has been converted into reusable, privacy-safe workflows rather than one-off notes.

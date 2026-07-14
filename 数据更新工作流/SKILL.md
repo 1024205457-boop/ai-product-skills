@@ -41,7 +41,7 @@ Choose the simplest path that matches the real source:
 
 For beginner automation, first replace manual pivot tables with a script that reads raw detail rows and outputs pivot-like summary tables. Only automate writing back after the generated pivot output is trusted.
 
-If the main question is whether to use API/Cookie or Playwright, use the separate `api-vs-playwright-automation` skill.
+If the main question is whether to use API/Cookie or Playwright, use the separate `API与Playwright自动化` skill.
 
 ## Pitfall Checks
 
