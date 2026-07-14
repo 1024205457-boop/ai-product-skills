@@ -1,6 +1,6 @@
 ---
 name: ai-data-update-workflow
-description: Run or design safe AI-assisted data update workflows for recurring reports, spreadsheets, dashboards, and anomaly checks, with source validation, scoped writes, read-back checks, and anomaly explanations. Use when the user asks to update data, automate weekly metrics, validate spreadsheets, compare week-over-week values, or design a data operations copilot.
+description: Run or design safe AI-assisted data update workflows for recurring reports, spreadsheets, dashboards, pivot tables, raw detail exports, and anomaly checks, with source validation, cleaning rules, field mapping, scoped writes, read-back checks, and anomaly explanations. Use when the user asks to update data, automate weekly metrics, build a pivot table from raw rows, validate spreadsheets, compare week-over-week values, handle date/time-window issues, or design a data operations copilot.
 ---
 
 # AI Data Update Workflow
@@ -57,6 +57,7 @@ Use:
 
 - `scripts/check_csv_quality.py` for basic CSV quality checks.
 - `references/safety-rules.md` for guardrails.
+- `references/明细流水到透视表方法.md` when the source is raw detail rows and the task is to clean fields, choose input columns, map them to output metrics, handle timezone/date-window issues, and generate pivot-style output.
 - `references/beginner-automation-examples.md` for a mock-data example that replaces a pivot table and reads text-detail records.
 - `references/raw-detail-to-pivot-script.md` when the user needs to turn raw user-state tables and touch-history tables into an automatically generated pivot table.
 - `scripts/build_detail_pivot.py` as a starter script for generating Excel pivot-style summary sheets from raw detail CSV files.

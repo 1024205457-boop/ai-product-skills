@@ -1,4 +1,4 @@
 interface:
-  display_name: "AI Data Update Workflow"
-  short_description: "Run safe data updates with source validation, scoped writes, read-back checks, and anomaly notes."
-  default_prompt: "Design or execute a safe data update workflow with source checks, scoped writes, read-back verification, and anomaly reporting."
+  display_name: "AI 数据流水更新"
+  short_description: "用清洗、字段映射、透视表、回读校验和异常检查来执行安全的数据流水更新。"
+  default_prompt: "设计或执行一条安全的数据流水更新流程：确认周期和来源，清洗明细字段，生成透视输出，写入目标表，回读校验，并说明异常。"
