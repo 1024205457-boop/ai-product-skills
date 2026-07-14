@@ -1,79 +1,79 @@
 ---
 name: api-vs-playwright-automation
-description: Design or review beginner-friendly automation scripts that choose between API/Cookie requests and Playwright browser automation for data export, dashboard updates, report refreshes, or internal tool operations. Use when the user asks whether to use API, cookie, browser automation, Playwright, web scraping, dashboard automation, replacing manual exports, or writing scripts for internal systems.
+description: 设计或审查适合初学者的数据自动化脚本，帮助在 API/Cookie 请求和 Playwright 浏览器自动化之间做选择。适用于数据导出、看板更新、报表刷新、内部工具操作、替代人工导出、网页自动化、Cookie 会话、Playwright 或爬取类脚本设计。
 ---
 
-# API vs Playwright Automation
+# API 与 Playwright 自动化
 
-Use this when a workflow can be automated either by calling an endpoint or by driving a browser. The core lesson: API scripts and Playwright scripts solve different problems. Do not choose by what feels easier in the first 10 minutes; choose by stability, permission, observability, and failure risk.
+当一个流程既可能通过接口调用完成，也可能通过浏览器操作完成时，使用这个 skill。核心经验是：API 脚本和 Playwright 脚本解决的是不同问题。不要按“前 10 分钟哪个更容易”来选，而要按稳定性、权限、可观测性和失败风险来选。
 
-## Decision Rule
+## 选择规则
 
-Prefer **API/Cookie scripts** when:
+优先选择 **API/Cookie 脚本**，当：
 
-- the page has a stable request endpoint.
-- inputs are clear: date range, page number, filters, IDs.
-- output is structured JSON/CSV.
-- the task is mostly export, aggregation, or read-only update.
-- credentials can be supplied safely at runtime.
+- 页面有稳定的请求接口。
+- 输入明确：日期范围、页码、筛选项、ID。
+- 输出是结构化 JSON/CSV。
+- 任务主要是导出、汇总或只读刷新。
+- 凭证可以在运行时安全提供。
 
-Prefer **Playwright** when:
+优先选择 **Playwright**，当：
 
-- there is no stable API or endpoint is hard to reproduce.
-- login depends on SSO, QR code, browser profile, or human confirmation.
-- the only reliable path is UI clicks: open report, choose date, click export.
-- you need screenshots, visual checks, or UI regression evidence.
+- 没有稳定 API，或接口很难复现。
+- 登录依赖 SSO、二维码、浏览器配置或人工确认。
+- 唯一可靠路径是 UI 操作：打开报表、选择日期、点击导出。
+- 需要截图、视觉检查或 UI 回归证据。
 
-Avoid both until clarified when:
+先不要自动化，直到澄清清楚，当：
 
-- the task may violate site terms.
-- the workflow needs destructive writes.
-- credentials/cookies would need to be stored in code.
-- the source period, owner, or destination is unclear.
+- 任务可能违反站点条款。
+- 流程需要破坏性写入。
+- 凭证或 Cookie 必须写进代码。
+- 来源周期、负责人或目标位置不清楚。
 
-## Beginner Workflow
+## 初学者流程
 
-1. Describe the manual workflow exactly: pages visited, filters selected, buttons clicked, copied fields, final destination.
-2. Decide whether the source is **structured endpoint** or **UI-only workflow**.
-3. Build a read-only prototype first:
-   - API path: fetch data and save raw JSON/CSV.
-   - Playwright path: log in, export/download, save raw file.
-4. Validate raw output: date range, row count, required fields, duplicates, empty values.
-5. Transform data in a deterministic script.
-6. Only then automate write-back, with read-back verification.
+1. 精确描述人工流程：访问哪些页面、选择哪些筛选项、点击哪些按钮、复制哪些字段、写到哪里。
+2. 判断来源是 **结构化接口** 还是 **只能通过 UI 操作**。
+3. 先做只读原型：
+   - API 路径：拉取数据并保存原始 JSON/CSV。
+   - Playwright 路径：登录、导出/下载、保存原始文件。
+4. 校验原始输出：日期范围、行数、必需字段、重复值、空值。
+5. 用确定性脚本做数据转换。
+6. 最后再自动化写回，并且必须做回读校验。
 
-## Output Contract
+## 输出契约
 
-When designing an automation, produce:
+设计自动化方案时，输出以下内容：
 
-- decision: API/Cookie, Playwright, or hybrid.
-- reason for the decision.
-- manual workflow being replaced.
-- inputs and outputs.
-- credential handling plan.
-- failure cases and fallback.
-- script skeleton or pseudocode.
-- validation and read-back checks.
+- 决策：API/Cookie、Playwright 或混合方案。
+- 决策原因。
+- 被替代的人工流程。
+- 输入和输出。
+- 凭证处理方式。
+- 失败场景和兜底方案。
+- 脚本骨架或伪代码。
+- 校验和回读检查。
 
-## Common Hybrid Pattern
+## 常见混合模式
 
-Use Playwright only to obtain the export file, then use deterministic scripts for processing:
+只用 Playwright 获取导出文件，再用确定性脚本处理：
 
 ```text
-Playwright login/export -> raw CSV -> validation script -> summary CSV -> manual review or scoped write-back
+Playwright 登录/导出 -> 原始 CSV -> 校验脚本 -> 汇总 CSV -> 人工复核或受控写回
 ```
 
-This is often safer than letting Playwright directly edit dashboards.
+这通常比让 Playwright 直接编辑看板更安全。
 
-## Capture First, Automate Second
+## 先捕获，再自动化
 
-Before writing code, capture how the current page gets data:
+写代码之前，先捕获页面是如何取数的：
 
-- **API path:** use browser DevTools Network to find the request, copy it as cURL, then translate it into a small script.
-- **Playwright path:** use Playwright codegen or manual locator inspection to record the UI steps, then simplify selectors and add download/read-back checks.
+- **API 路径：** 用浏览器开发者工具 Network 找请求，复制为 cURL，再翻译成小脚本。
+- **Playwright 路径：** 用 Playwright codegen 或手动检查 locator 记录 UI 步骤，再简化选择器，并加入下载和回读检查。
 
-## References
+## 参考资料
 
-- Read `references/api-cookie-path.md` when the source has a visible API request, export endpoint, or cookie-based session.
-- Read `references/playwright-path.md` when the workflow depends on browser UI, downloads, SSO, screenshots, or selectors.
-- Read `references/path-decision-table.md` when comparing both approaches for a product/design document.
+- 有可见 API 请求、导出接口或 Cookie 会话时，读 `references/api-cookie-path.md`。
+- 流程依赖浏览器 UI、下载、SSO、截图或选择器时，读 `references/playwright-path.md`。
+- 需要在产品/设计文档里比较两种方案时，读 `references/path-decision-table.md`。

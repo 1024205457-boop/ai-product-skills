@@ -1,52 +1,51 @@
 ---
 name: single-agent-tool-orchestration
-description: Design or review a single-Agent plus tools workflow where model reasoning must be constrained by stages, business events, scheduled follow-ups, source-of-truth data, and redline handoff rules. Use when the user asks about Agent architecture, tool-calling rules, event/TODO design, memory boundaries, or why a workflow is not multi-Agent.
+description: 设计或审查单 Agent 加工具的工作流，让模型推理受阶段、业务事件、定时跟进、事实数据源和红线转人工规则约束。适用于 Agent 架构、工具调用规则、事件/TODO 设计、记忆边界，或解释为什么某个流程不是多 Agent。
 ---
 
-# Single Agent Tool Orchestration
+# 单 Agent 工具编排
 
-Use this when an Agent must complete a business workflow, not just chat. The core lesson: do not let the model freely decide tools from scratch each turn. Give it a light orchestration layer made of stages, events, tool contracts, state memory, and redline fallbacks.
+当 Agent 需要完成业务流程，而不只是聊天时，使用这个 skill。核心经验是：不要让模型每一轮都自由决定从零调用什么工具。要给它一个轻量编排层：阶段、事件、工具契约、状态记忆和红线兜底。
 
-## Hard-Won Rules
+## 关键规则
 
-1. Name the architecture honestly. If there is one model coordinating tools and code, call it "single Agent + toolized code + event/TODO drive", not multi-Agent.
-2. Separate reasoning from execution. Let the model understand intent, stage, and wording. Let deterministic tools handle identity, status, factual data, message delivery, future tasks, and handoff.
-3. Every future action needs a real scheduled task. A note in the model response is not a reminder. If something must happen later, create a TODO/task now.
-4. Every user-visible message needs a send action. Drafting text is not sending. If the user should see it, a message tool must be called and checked.
-5. Facts must come from their source of truth. Membership, order status, learning data, prices, policies, and quotas should come from tools, databases, or approved knowledge sources.
-6. Redlines beat conversion or completion. Complaints, privacy issues, unsafe claims, policy uncertainty, or repeated tool failure should route to human assistance.
+1. 诚实命名架构。如果是一个模型在协调工具和代码，就叫“单 Agent + 工具化代码 + 事件/TODO 驱动”，不要叫多 Agent。
+2. 分离推理和执行。让模型理解意图、阶段和措辞；让确定性工具处理身份、状态、事实数据、消息发送、未来任务和转人工。
+3. 每个未来动作都需要真实定时任务。模型回复里的备注不是提醒。如果以后必须发生某事，现在就创建 TODO/任务。
+4. 每条用户可见消息都需要发送动作。起草文本不等于发送。用户应该看到时，必须调用消息工具并检查结果。
+5. 事实必须来自事实源。用户身份、订单状态、学习数据、价格、政策和额度应来自工具、数据库或批准的知识源。
+6. 红线优先于转化或完成。投诉、隐私问题、不安全承诺、政策不确定或工具连续失败，应转人工。
 
-## Workflow
+## 工作流
 
-1. Define the user journey and success moment.
-2. Split the journey into stages with entry conditions, exit conditions, trigger events, and forbidden actions.
-3. List business events that wake the Agent, such as user message, account binding, behavior event, scheduled follow-up, purchase, cancellation, or service closeout.
-4. For each stage, write tool contracts:
-   - trigger condition.
-   - required inputs.
-   - source of truth.
-   - success condition.
-   - retry and fallback.
-   - whether it creates user-visible output.
-5. Define memory boundaries:
-   - store stable state and decision signals.
-   - do not store data that should be queried live.
-   - append important state changes with timestamps.
-6. Add an audit checklist before launch:
-   - required tool was called.
-   - data source was used.
-   - message was actually sent.
-   - future task was actually scheduled.
-   - frequency and redline checks passed.
+1. 定义用户旅程和成功时刻。
+2. 把旅程拆成阶段，并写清进入条件、退出条件、触发事件和禁止动作。
+3. 列出唤醒 Agent 的业务事件，例如用户消息、账号绑定、行为事件、定时跟进、购买、取消或服务结束。
+4. 为每个阶段写工具契约：
+   - 触发条件。
+   - 必需输入。
+   - 事实源。
+   - 成功条件。
+   - 重试和兜底。
+   - 是否产生用户可见输出。
+5. 定义记忆边界：
+   - 存稳定状态和决策信号。
+   - 不存应该实时查询的数据。
+   - 重要状态变化带时间戳追加记录。
+6. 上线前加入审计清单：
+   - 必需工具已调用。
+   - 使用了事实源。
+   - 消息确实已发送。
+   - 未来任务确实已创建。
+   - 频控和红线检查通过。
 
-## Pitfall Checks
+## 易错检查
 
-- Did the model answer a user without sending through the official channel?
-- Did it promise a later follow-up without creating a task?
-- Did it mention user-specific facts without querying the relevant tool?
-- Did it keep selling after refusal, complaint, or opt-out?
-- Did it retry forever instead of handing off after repeated tool failure?
-- Did it route a user by what they claimed instead of verified account/status data?
+- 模型是否绕过正式渠道直接“回复”用户？
+- 是否承诺稍后跟进但没有创建任务？
+- 是否没查工具就提到用户专属事实？
+- 是否在拒绝、投诉或退订后继续销售？
+- 是否在工具连续失败后无限重试，而不是转人工？
+- 是否按用户自称分流，而不是按已验证账号/状态数据分流？
 
-Read `references/tool-contracts.md` when writing implementation-facing tables.
-
+写面向实现的表格时，读取 `references/tool-contracts.md`。

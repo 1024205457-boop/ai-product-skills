@@ -1,63 +1,63 @@
 ---
 name: ai-data-update-workflow
-description: Run or design safe AI-assisted data update workflows for recurring reports, spreadsheets, dashboards, pivot tables, raw detail exports, and anomaly checks, with source validation, cleaning rules, field mapping, scoped writes, read-back checks, and anomaly explanations. Use when the user asks to update data, automate weekly metrics, build a pivot table from raw rows, validate spreadsheets, compare week-over-week values, handle date/time-window issues, or design a data operations copilot.
+description: 运行或设计安全的 AI 辅助数据更新工作流，覆盖周期报表、电子表格、看板、透视表、原始明细导出和异常检查，并包含来源校验、清洗规则、字段映射、受控写入、回读校验和异常说明。适用于更新数据、自动化周度指标、从原始行生成透视表、校验表格、做环比对比、处理日期/时区窗口问题，或设计数据运营助手。
 ---
 
-# AI Data Update Workflow
+# AI 数据更新工作流
 
-Use AI as an operator with guardrails. The lesson: data updates look simple, but the dangerous failures are stale sources, wrong periods, shifted columns, denominator mistakes, silent anomalies, and unverified writes.
+把 AI 当作有护栏的操作者使用。核心经验是：数据更新看起来简单，但真正危险的失败是来源过期、周期错误、列移动、分母口径错、异常静默通过以及写入后不校验。
 
-## Hard-Won Rules
+## 关键规则
 
-1. Never update before confirming the period and source. Many bad updates come from using yesterday's file, last week's date, or an old export.
-2. Locate cells by headers and dates, not row numbers. Rows move. Hardcoded positions quietly corrupt dashboards.
-3. Read back after writing. A successful script run is not proof the right values landed in the right place.
-4. Make denominators explicit. Conversion rate, completion rate, and coverage rate are meaningless without a named denominator.
-5. Flag anomalies instead of smoothing them away. Large jumps, zeros, missing rows, and denominator drops need a note.
-6. Preserve manual edits. Only write the intended range or table. Do not rewrite unrelated formulas, notes, or formatting.
+1. 确认周期和来源前不要更新。很多错误来自用了昨天的文件、上周的日期或旧导出。
+2. 用表头和日期定位单元格，不要用固定行号。行会移动，硬编码位置会悄悄污染看板。
+3. 写入后必须回读。脚本运行成功不等于正确值写到了正确位置。
+4. 分母要明确。转化率、完成率、覆盖率如果没有命名分母，就没有意义。
+5. 标记异常，不要把异常抹平。大幅波动、零值、缺行和分母下降都需要说明。
+6. 保留人工编辑。只写目标范围或目标表，不要重写无关公式、备注或格式。
 
-## Workflow
+## 工作流
 
-1. Confirm the target period, source files, destination file, and required completeness.
-2. Fetch or load data into an inspectable intermediate format.
-3. Validate before writing:
-   - date range complete.
-   - required fields present.
-   - row count nonzero.
-   - no stale parameters.
-   - formulas and denominators explicit.
-4. Write with minimal scope and locate targets by headers/dates, not hardcoded row numbers.
-5. Read back written values.
-6. Compare against previous period and flag large changes.
-7. Report normal metrics, anomalies, pending confirmations, and completed steps.
+1. 确认目标周期、来源文件、目标文件和完整性要求。
+2. 抓取或加载数据到可检查的中间格式。
+3. 写入前校验：
+   - 日期范围完整。
+   - 必需字段存在。
+   - 行数非零。
+   - 没有陈旧参数。
+   - 公式和分母明确。
+4. 最小范围写入，并用表头/日期定位目标，不用硬编码行号。
+5. 回读写入值。
+6. 和上一周期比较，标记大幅变化。
+7. 汇报正常指标、异常、待确认项和已完成步骤。
 
-## Beginner Implementation Paths
+## 初学者实现路径
 
-Choose the simplest path that matches the real source:
+选择最贴近真实来源的简单路径：
 
-1. **CSV/XLSX export path:** safest for beginners. Export raw data, run a local script to aggregate it, then paste or write the result.
-2. **API/Cookie path:** use only when the internal system has stable request endpoints and the operator can provide a short-lived cookie/token securely. Never commit cookies.
-3. **Playwright path:** use when there is no API and data must be downloaded from a web UI. Use it to log in, click export, and save a file; do not let it blindly edit dashboards without read-back checks.
+1. **CSV/XLSX 导出路径：** 对初学者最安全。导出原始数据，运行本地脚本聚合，再粘贴或写回结果。
+2. **API/Cookie 路径：** 仅当内部系统有稳定接口，且操作者能安全提供短期 Cookie/token 时使用。不要提交 Cookie。
+3. **Playwright 路径：** 没有 API 且必须从网页下载数据时使用。让它登录、点击导出、保存文件；不要让它在没有回读校验的情况下直接编辑看板。
 
-For beginner automation, first replace manual pivot tables with a script that reads raw detail rows and outputs pivot-like summary tables. Only automate writing back after the generated pivot output is trusted.
+初学者自动化时，先用脚本替代人工透视表：读取原始明细行，输出透视式汇总表。只有生成的透视结果可信后，再自动化写回。
 
-If the main question is whether to use API/Cookie or Playwright, use the separate `API与Playwright自动化` skill.
+如果主要问题是选择 API/Cookie 还是 Playwright，使用单独的 `API与Playwright自动化` skill。
 
-## Pitfall Checks
+## 易错检查
 
-- Is the date range exactly the requested one?
-- Are all required dimensions present?
-- Are row counts and non-null counts plausible?
-- Did any metric become zero because the source was empty?
-- Did formulas survive after writing?
-- Did the read-back match the intended output?
-- Is every abnormal movement explained or explicitly marked unknown?
+- 日期范围是否正好等于请求周期？
+- 必需维度是否都存在？
+- 行数和非空数是否合理？
+- 是否因为来源为空导致某个指标变成 0？
+- 写入后公式是否仍然正确？
+- 回读结果是否匹配预期输出？
+- 每个异常波动是否已解释，或明确标记为未知？
 
-Use:
+## 可用资源
 
-- `scripts/check_csv_quality.py` for basic CSV quality checks.
-- `references/safety-rules.md` for guardrails.
-- `references/明细流水到透视表方法.md` when the source is raw detail rows and the task is to clean fields, choose input columns, map them to output metrics, handle timezone/date-window issues, and generate pivot-style output.
-- `references/beginner-automation-examples.md` for a mock-data example that replaces a pivot table and reads text-detail records.
-- `references/raw-detail-to-pivot-script.md` when the user needs to turn raw user-state tables and touch-history tables into an automatically generated pivot table.
-- `scripts/build_detail_pivot.py` as a starter script for generating Excel pivot-style summary sheets from raw detail CSV files.
+- `scripts/check_csv_quality.py`：基础 CSV 质量检查。
+- `references/safety-rules.md`：数据更新护栏。
+- `references/明细流水到透视表方法.md`：从原始明细行清洗字段、选择输入字段、映射输出字段、处理时区/日期窗口并生成透视输出。
+- `references/beginner-automation-examples.md`：替代人工透视表和读取文本明细的通用示例。
+- `references/raw-detail-to-pivot-script.md`：把用户状态表和触达历史表转成自动透视表。
+- `scripts/build_detail_pivot.py`：从原始明细 CSV 生成 Excel 透视式汇总表的起步脚本。

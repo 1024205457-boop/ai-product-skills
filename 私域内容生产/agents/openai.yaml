@@ -1,5 +1,4 @@
 interface:
-  display_name: "Private Domain Content Production"
-  short_description: "Design AI copy and image production workflows with review, dedupe, channel adaptation, and frequency control."
-  default_prompt: "Design a private-domain AI content production workflow for this lifecycle scenario, including inputs, generation, review gates, channel adaptation, and performance metrics."
-
+  display_name: "私域内容生产"
+  short_description: "设计 AI 文案和图片生产流程，包含事实输入、批量生成、审核、去重、渠道适配和频控。"
+  default_prompt: "帮我设计一个私域内容生产工作流，明确输入事实、代码插入字段、AI 生成边界、审核门、去重和频控规则。"

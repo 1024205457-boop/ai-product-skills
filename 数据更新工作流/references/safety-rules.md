@@ -1,55 +1,55 @@
-# Data Update Safety Rules
+# 数据更新安全规则
 
-Use these rules when updating recurring data files. The common failure is not "AI cannot calculate"; it is updating the wrong period, wrong denominator, wrong cells, or silently accepting an anomaly.
+更新周期性数据文件时使用这些规则。常见失败不是“AI 不会算”，而是更新了错误周期、错误分母、错误单元格，或静默接受异常。
 
-## Must Do
+## 必须做
 
-- Confirm date range, source file/export time, destination, and owner before writing.
-- Keep raw input files separate from output files.
-- Validate every required field, dimension, row count, and duplicate key.
-- Use explicit formulas, numerators, and denominators.
-- Locate target cells by table, header, and date key.
-- Keep writes scoped to intended rows/cells.
-- Read back destination values after writing.
-- Flag large period-over-period changes.
-- Stop after repeated identical failures.
+- 写入前确认日期范围、来源文件/导出时间、目标文件和负责人。
+- 原始输入文件和输出文件分开保存。
+- 校验每个必需字段、维度、行数和重复键。
+- 明确公式、分子和分母。
+- 用表、表头和日期键定位目标单元格。
+- 只写入目标行/单元格。
+- 写入后回读目标值。
+- 标记大幅环比变化。
+- 连续出现相同失败后停止。
 
-## Must Not Do
+## 禁止做
 
-- Do not invent missing values.
-- Do not write incomplete periods without confirmation.
-- Do not assume spreadsheet structure is unchanged.
-- Do not suppress anomalies because they seem plausible.
-- Do not mix business judgment with mechanical validation.
-- Do not invent explanations for metric movement.
-- Do not overwrite unrelated formulas, notes, formatting, or manual edits.
+- 不要编造缺失值。
+- 未确认前不要写入不完整周期。
+- 不要假设电子表格结构没有变化。
+- 不要因为异常看起来合理就压掉它。
+- 不要把业务判断和机械校验混在一起。
+- 不要编造指标波动原因。
+- 不要覆盖无关公式、备注、格式或人工编辑。
 
-## Anomaly Notes
+## 异常说明
 
-Use short, explicit notes:
+使用简短、明确的说明：
 
-- "Metric increased because numerator rose while denominator was stable."
-- "Metric dropped because denominator expanded faster than numerator."
-- "Zero value appears source-driven; confirm export completeness."
-- "Cannot explain movement from available data; mark for owner confirmation."
+- “指标上升，因为分子增加且分母稳定。”
+- “指标下降，因为分母扩张快于分子。”
+- “零值看起来来自来源数据；需要确认导出完整性。”
+- “现有数据无法解释波动；标记为需要负责人确认。”
 
-## Report Template
+## 报告模板
 
 ```text
-Data Update Report (<period>)
+数据更新报告（<period>）
 
-Completed:
-- Source loaded:
-- Validation:
-- Output written:
-- Read-back check:
+已完成：
+- 来源加载：
+- 校验：
+- 输出写入：
+- 回读检查：
 
-Normal metrics:
-- metric: current (previous, change)
+正常指标：
+- 指标：本期值（上期值，变化）
 
-Anomalies:
-- metric: current (previous, change, reason needs confirmation)
+异常：
+- 指标：本期值（上期值，变化，需要确认的原因）
 
-Pending:
-- items requiring human judgment
+待处理：
+- 需要人工判断的事项
 ```

@@ -1,21 +1,21 @@
-# Path Decision Table
+# 路径决策表
 
-Use this table before writing code.
+写代码前先用这张表判断路径。
 
-| Question | API/Cookie path | Playwright path |
+| 问题 | API/Cookie 路径 | Playwright 路径 |
 | --- | --- | --- |
-| Is there a stable endpoint? | Best choice | Usually unnecessary |
-| Is login SSO/QR/manual? | Harder unless cookie is available | Better fit |
-| Is output JSON/CSV? | Best choice | Good for clicking export |
-| Is output only visible in UI? | Harder | Better fit |
-| Need screenshots? | No | Yes |
-| Need high-volume repeat runs? | Better | Slower and more fragile |
-| Selectors change often? | Not affected | Fragile |
-| Endpoint parameters are unclear? | Risky | Easier to mirror manual flow |
-| Need write-back? | Safer if API supports scoped writes | Risky; must read back |
-| New beginner implementation? | Start here if endpoint is obvious | Start here if export button is obvious |
+| 有稳定接口吗？ | 最佳选择 | 通常没必要 |
+| 登录依赖 SSO/二维码/人工吗？ | 除非有 Cookie，否则更难 | 更适合 |
+| 输出是 JSON/CSV 吗？ | 最佳选择 | 适合点击导出 |
+| 输出只显示在 UI 上吗？ | 更难 | 更适合 |
+| 需要截图吗？ | 不需要 | 需要 |
+| 需要高频重复运行吗？ | 更适合 | 更慢且更脆弱 |
+| 选择器经常变化吗？ | 不受影响 | 脆弱 |
+| 接口参数不清楚吗？ | 有风险 | 更容易复刻人工流程 |
+| 需要写回吗？ | 如果 API 支持受控写入，更安全 | 风险高，必须回读 |
+| 初学者首次实现吗？ | 接口明显时从这里开始 | 导出按钮明显时从这里开始 |
 
-## Recommended Product Wording
+## 推荐产品表述
 
 ```text
 本项目的数据自动化分两条路径：
@@ -26,14 +26,13 @@ Use this table before writing code.
 MVP 阶段优先做只读导出和汇总，不直接自动改线上看板。等读回校验稳定后，再做小范围写回。
 ```
 
-## Simple Selection Formula
+## 简单选择公式
 
 ```text
-If stable endpoint exists:
-  Use API/Cookie script.
-Else if export can only be reached through UI:
-  Use Playwright to download raw data.
-Then:
-  Use deterministic validation + aggregation script.
+如果存在稳定接口：
+  使用 API/Cookie 脚本。
+否则如果只能通过 UI 导出：
+  使用 Playwright 下载原始数据。
+然后：
+  使用确定性校验 + 聚合脚本。
 ```
-

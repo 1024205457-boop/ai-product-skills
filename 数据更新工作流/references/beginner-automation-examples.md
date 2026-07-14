@@ -1,14 +1,14 @@
-# Beginner Automation Examples
+# 初学者自动化示例
 
-This reference is for beginners who currently update reports by opening exports, making pivot tables, and copying numbers into a weekly dashboard.
+这个参考给还在手动打开导出文件、做透视表、把数字复制到周报看板的人使用。
 
-If the source data is user-state records or detailed touch-history rows, read `raw-detail-to-pivot-script.md` first. That file is the primary example for turning raw detail data into pivot-style output tables. This file only gives smaller beginner patterns.
+如果来源数据是用户状态记录或详细触达历史，先读 `raw-detail-to-pivot-script.md`。那个文件是把原始明细转成透视式输出表的主示例。本文件只提供较小的入门模式。
 
-## Example 1: Replace a Pivot Table With a Script
+## 示例 1：用脚本替代透视表
 
-### Mock Raw Data
+### 模拟原始数据
 
-Save this as `mock_events.csv`:
+保存为 `mock_events.csv`：
 
 ```csv
 date,user_id,channel,event,amount
@@ -21,15 +21,15 @@ date,user_id,channel,event,amount
 2026-07-02,U004,ad,book,0
 ```
 
-Manual pivot goal:
+人工透视目标：
 
-- Rows: `channel`
-- Columns/metrics: views, bookings, payments, revenue
-- Derived metrics: booking rate = bookings / views, pay rate = payments / views
+- 行：`channel`
+- 列/指标：浏览、预约、支付、收入
+- 衍生指标：预约率 = 预约 / 浏览，支付率 = 支付 / 浏览
 
-### Minimal Python Script
+### 最小 Python 脚本
 
-Save as `weekly_summary.py`:
+保存为 `weekly_summary.py`：
 
 ```python
 import csv
@@ -93,26 +93,26 @@ with open(output_file, "w", newline="", encoding="utf-8") as f:
 print(f"Wrote {output_file}")
 ```
 
-Run:
+运行：
 
 ```bash
 python weekly_summary.py
 ```
 
-What this replaces:
+它替代了：
 
-- No manual pivot table.
-- No hand-counting.
-- Denominators are explicit.
-- The output can be compared week over week.
+- 手工透视表。
+- 手工计数。
+- 口径不清的分母。
+- 难以环比的临时结果。
 
-## Example 2: Read Detailed Diary Logs
+## 示例 2：读取详细日记/备注
 
-Some products do not only have event rows. They also have diary-like detail records, such as "teacher called parent", "student missed class", or "user complained".
+有些产品不只有事件行，也会有类似“老师联系家长”“学生缺课”“用户投诉”的日记式记录。
 
-### Mock Diary Data
+### 模拟日记数据
 
-Save as `mock_diary.csv`:
+保存为 `mock_diary.csv`：
 
 ```csv
 date,user_id,operator,note
@@ -122,7 +122,7 @@ date,user_id,operator,note
 2026-07-02,U004,teacher_c,电话未接通，准备明天再跟进
 ```
 
-### Simple Rule Extraction
+### 简单规则抽取
 
 ```python
 import csv
@@ -145,89 +145,89 @@ with open("mock_diary.csv", newline="", encoding="utf-8") as f:
         print(row["date"], row["user_id"], tags, note)
 ```
 
-Where AI can help:
+AI 可以帮助：
 
-- Summarize long notes.
-- Classify ambiguous notes.
-- Extract action items.
+- 总结长备注。
+- 分类模糊备注。
+- 抽取待办事项。
 
-Where code should stay in charge:
+代码必须负责：
 
-- Reading rows.
-- Matching user IDs.
-- Writing tags.
-- Counting tag frequency.
-- Keeping original notes unchanged.
+- 读取行。
+- 匹配用户 ID。
+- 写入标签。
+- 统计标签频次。
+- 保留原始备注不变。
 
-## Example 3: Cookie vs Playwright
+## 示例 3：Cookie vs Playwright
 
-### Cookie/API Path
+### Cookie/API 路径
 
-Use this when:
+适用条件：
 
-- The page calls a stable API endpoint.
-- You can inspect request parameters.
-- The operator can paste a temporary cookie or token at runtime.
+- 页面调用稳定 API。
+- 能检查请求参数。
+- 操作者能在运行时粘贴临时 Cookie 或 token。
 
-Beginner shape:
-
-```text
-1. Operator exports cookie into local environment variable.
-2. Script requests `/api/report?start=2026-07-01&end=2026-07-07`.
-3. Script saves raw JSON/CSV.
-4. Script validates fields and row count.
-5. Script writes summary CSV.
-```
-
-Rules:
-
-- Do not commit cookies.
-- Do not paste cookies into prompts.
-- Prefer read-only export endpoints.
-- Log the request period and export time.
-
-### Playwright Path
-
-Use this when:
-
-- There is no documented API.
-- The only stable operation is "open page -> choose date -> click export".
-- Login requires browser session or SSO.
-
-Beginner shape:
+初学者形态：
 
 ```text
-1. Open browser with Playwright.
-2. Use existing logged-in browser profile or manual login.
-3. Navigate to report page.
-4. Select date range.
-5. Click export.
-6. Save downloaded CSV.
-7. Run the same validation and summary script.
+1. 操作者把 Cookie 导出到本地环境变量。
+2. 脚本请求 `/api/report?start=2026-07-01&end=2026-07-07`。
+3. 脚本保存原始 JSON/CSV。
+4. 脚本校验字段和行数。
+5. 脚本写出汇总 CSV。
 ```
 
-Rules:
+规则：
 
-- Playwright should fetch/export first, not directly edit dashboards.
-- Always keep downloaded raw files.
-- Add screenshot or HTML snapshot if selectors are unstable.
-- After any write-back, read the destination and compare values.
+- 不提交 Cookie。
+- 不把 Cookie 粘贴到提示词。
+- 优先用只读导出接口。
+- 记录请求周期和导出时间。
 
-## Example 4: Safe Write-Back Checklist
+### Playwright 路径
 
-Before writing into a dashboard:
+适用条件：
 
-- Target period confirmed.
-- Raw export saved.
-- Summary generated.
-- Required metrics non-empty.
-- Denominators named.
-- Previous period comparison checked.
-- Destination located by header/date, not row number.
+- 没有文档化 API。
+- 唯一稳定操作是“打开页面 -> 选择日期 -> 点击导出”。
+- 登录需要浏览器会话或 SSO。
 
-After writing:
+初学者形态：
 
-- Read back all written values.
-- Compare read-back with summary CSV.
-- Add anomaly notes.
-- Report exactly what changed.
+```text
+1. 用 Playwright 打开浏览器。
+2. 使用已有登录浏览器配置或人工登录。
+3. 进入报表页面。
+4. 选择日期范围。
+5. 点击导出。
+6. 保存下载的 CSV。
+7. 运行同一套校验和汇总脚本。
+```
+
+规则：
+
+- Playwright 应先抓取/导出，不要直接编辑看板。
+- 始终保留下载的原始文件。
+- 选择器不稳定时，加截图或 HTML 快照。
+- 任何写回后，都要读取目标值并比较。
+
+## 示例 4：安全写回清单
+
+写入看板前：
+
+- 目标周期已确认。
+- 原始导出已保存。
+- 汇总已生成。
+- 必需指标非空。
+- 分母已命名。
+- 上周期对比已检查。
+- 目标位置用表头/日期定位，不用行号。
+
+写入后：
+
+- 回读所有写入值。
+- 回读值和汇总 CSV 比较。
+- 加入异常说明。
+- 准确报告改了什么。

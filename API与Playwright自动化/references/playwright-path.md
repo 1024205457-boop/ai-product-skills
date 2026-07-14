@@ -1,68 +1,68 @@
-# Playwright Path
+# Playwright 路径
 
-Use this path when the reliable workflow is browser-based: login, choose filters, click export, download a file, or take screenshots.
+当可靠流程依赖浏览器操作时，使用这条路径：登录、选择筛选项、点击导出、下载文件或截图。
 
-## Typical Manual Workflow
-
-```text
-1. Open report backend.
-2. Log in through SSO or QR code.
-3. Select date range.
-4. Click query.
-5. Click export.
-6. Wait for CSV download.
-7. Check downloaded file and build summary.
-```
-
-## Playwright Automation Shape
+## 典型人工流程
 
 ```text
-1. Open browser.
-2. Use existing login state or allow manual login.
-3. Navigate to report page.
-4. Fill date range and filters.
-5. Click export.
-6. Save downloaded CSV.
-7. Run deterministic validation/aggregation script.
+1. 打开报表后台。
+2. 通过 SSO 或二维码登录。
+3. 选择日期范围。
+4. 点击查询。
+5. 点击导出。
+6. 等待 CSV 下载。
+7. 检查下载文件并生成汇总。
 ```
 
-## How to Capture the UI Workflow
+## Playwright 自动化形态
 
-Use this when a beginner asks "how do I write the Playwright script?"
+```text
+1. 打开浏览器。
+2. 使用已有登录态，或允许人工登录。
+3. 进入报表页面。
+4. 填写日期范围和筛选项。
+5. 点击导出。
+6. 保存下载的 CSV。
+7. 运行确定性校验/聚合脚本。
+```
 
-### Option A: Playwright codegen
+## 如何捕获 UI 流程
+
+当初学者问“我怎么写 Playwright 脚本”时，用下面的方法。
+
+### 方案 A：Playwright codegen
 
 ```bash
 npx playwright codegen https://example.com/report
 ```
 
-Then manually perform the workflow:
+然后手动执行流程：
 
-1. log in if needed.
-2. open the report page.
-3. select date range.
-4. click query.
-5. click export.
+1. 如有需要，先登录。
+2. 打开报表页。
+3. 选择日期范围。
+4. 点击查询。
+5. 点击导出。
 
-Codegen will produce draft locators. Treat this as a starting point, not final code.
+Codegen 会生成 locator 草稿。把它当起点，不要当最终代码。
 
-Clean up generated code:
+清理生成代码：
 
-- replace fragile CSS selectors with `getByRole`, `getByLabel`, or `getByText`.
-- remove unnecessary waits.
-- add `waitForEvent("download")` before export click.
-- add screenshot after filters are applied.
-- save downloaded raw file before processing.
+- 用 `getByRole`、`getByLabel` 或 `getByText` 替换脆弱 CSS 选择器。
+- 删除不必要的等待。
+- 导出点击前加入 `waitForEvent("download")`。
+- 筛选条件应用后截图。
+- 处理前先保存下载的原始文件。
 
-### Option B: Manual locator inspection
+### 方案 B：手动检查 locator
 
-Use DevTools or Playwright Inspector to identify stable UI handles:
+用 DevTools 或 Playwright Inspector 找稳定 UI 句柄：
 
 ```bash
 PWDEBUG=1 node export_report.js
 ```
 
-Prefer locators like:
+优先使用：
 
 ```js
 await page.getByLabel("Start date").fill("2026-07-01");
@@ -70,36 +70,36 @@ await page.getByRole("button", { name: "Export" }).click();
 await page.getByText("No data").isVisible();
 ```
 
-Avoid:
+避免：
 
 ```js
 await page.locator("div:nth-child(4) > span > button").click();
 ```
 
-## Login State Options
+## 登录态方案
 
-For internal tools, login often decides whether Playwright is practical.
+内部工具里，登录方式往往决定 Playwright 是否可行。
 
-### Manual login each run
+### 每次人工登录
 
-Best for first prototype:
+最适合第一个原型：
 
 ```text
-1. launch headful browser.
-2. let operator log in manually.
-3. press Enter in terminal.
-4. script continues export.
+1. 启动有界面浏览器。
+2. 让操作者手动登录。
+3. 在终端按回车。
+4. 脚本继续导出。
 ```
 
-### Save storage state
+### 保存 storage state
 
-Use after the first prototype works:
+第一个原型跑通后再使用：
 
 ```js
 await context.storageState({ path: "storage-state.json" });
 ```
 
-Next run:
+下次运行：
 
 ```js
 const context = await browser.newContext({
@@ -108,9 +108,9 @@ const context = await browser.newContext({
 });
 ```
 
-Never commit `storage-state.json`; it may contain cookies or tokens.
+不要提交 `storage-state.json`，它可能包含 Cookie 或 token。
 
-## Minimal Node Skeleton
+## 最小 Node 骨架
 
 ```js
 import { chromium } from "playwright";
@@ -140,46 +140,46 @@ await page.screenshot({ path: "report-exported.png", fullPage: true });
 await browser.close();
 ```
 
-## Selector Rules
+## 选择器规则
 
-Prefer:
+优先：
 
 - `getByRole`
 - `getByLabel`
-- stable test IDs
-- visible text that product owners control
+- 稳定 test ID
+- 产品负责人会维护的可见文本
 
-Avoid:
+避免：
 
-- long CSS chains.
-- auto-generated class names.
-- nth-child selectors unless there is no alternative.
+- 很长的 CSS 链。
+- 自动生成的 class 名。
+- 除非没有替代方案，不用 nth-child 选择器。
 
-## Validation Checklist
+## 校验清单
 
-- Screenshot saved after filters are applied.
-- Download file exists.
-- File modified time matches current run.
-- CSV headers match expected fields.
-- Date range inside file matches selected date range.
-- Row count is plausible.
+- 筛选条件应用后保存截图。
+- 下载文件存在。
+- 文件修改时间属于本次运行。
+- CSV 表头匹配预期字段。
+- 文件内日期范围匹配页面选择的日期范围。
+- 行数合理。
 
-## When Not to Use This Path
+## 什么时候不要用这条路径
 
-- A stable API endpoint already exists.
-- The run needs high-frequency batch execution.
-- UI selectors change daily.
-- The script would click destructive buttons.
-- There is no read-back or downloaded artifact to verify.
+- 已经有稳定 API。
+- 运行需要高频批处理。
+- UI 选择器每天变化。
+- 脚本会点击破坏性按钮。
+- 没有回读或下载产物可验证。
 
-## Safe Write-Back Rule
+## 安全写回规则
 
-For beginners, Playwright should usually stop at export/download. If it must write back:
+初学者通常应让 Playwright 停在导出/下载。如果必须写回：
 
 ```text
-1. Write only one scoped table/range.
-2. Take screenshot before and after.
-3. Read the resulting value from the page.
-4. Compare with source summary.
-5. Stop on first mismatch.
+1. 只写一个受控表格/范围。
+2. 写前写后都截图。
+3. 从页面读取结果值。
+4. 和来源汇总比较。
+5. 第一个不匹配就停止。
 ```

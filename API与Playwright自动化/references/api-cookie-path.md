@@ -1,72 +1,72 @@
-# API/Cookie Path
+# API/Cookie 路径
 
-Use this path when the system has a stable endpoint and the task can be represented as request parameters.
+当系统有稳定接口，并且任务可以表达成请求参数时，使用这条路径。
 
-## Typical Manual Workflow
-
-```text
-1. Open internal report page.
-2. Select date range: 2026-07-01 to 2026-07-07.
-3. Select channel: all.
-4. Click search.
-5. Download CSV or copy table.
-6. Make a weekly summary.
-```
-
-## API/Cookie Automation Shape
+## 典型人工流程
 
 ```text
-1. Operator provides date range.
-2. Operator provides cookie/token at runtime.
-3. Script requests report endpoint.
-4. Script saves raw response.
-5. Script validates fields and row count.
-6. Script aggregates metrics.
-7. Script outputs summary CSV and anomaly notes.
+1. 打开内部报表页。
+2. 选择日期范围：2026-07-01 到 2026-07-07。
+3. 选择渠道：全部。
+4. 点击搜索。
+5. 下载 CSV 或复制表格。
+6. 生成周度汇总。
 ```
 
-## How to Capture the API Request
+## API/Cookie 自动化形态
 
-Use this when a beginner asks "how do I know which API to call?"
+```text
+1. 操作者提供日期范围。
+2. 操作者在运行时提供 cookie/token。
+3. 脚本请求报表接口。
+4. 脚本保存原始响应。
+5. 脚本校验字段和行数。
+6. 脚本聚合指标。
+7. 脚本输出汇总 CSV 和异常说明。
+```
 
-1. Open Chrome DevTools.
-2. Go to the **Network** tab.
-3. Filter by **Fetch/XHR**.
-4. Clear old requests.
-5. On the page, perform the exact manual action:
-   - choose date range.
-   - choose filters.
-   - click query/export.
-6. Click the request that appears.
-7. Check:
-   - **Request URL:** endpoint path.
-   - **Payload/Query String:** date, page, filters, IDs.
-   - **Response/Preview:** whether it contains the table data.
-   - **Headers:** auth header, cookie, content type.
-8. Right-click the request and choose **Copy as cURL**.
-9. Save the cURL in a private local note, then convert it to a script.
+## 如何捕获 API 请求
 
-Do not paste production cookies into public docs, prompts, commits, or screenshots.
+当初学者问“我怎么知道该调用哪个 API”时，用这套步骤：
 
-## What to Look For in Network
+1. 打开 Chrome DevTools。
+2. 进入 **Network** 标签。
+3. 按 **Fetch/XHR** 过滤。
+4. 清空旧请求。
+5. 在页面上执行完整人工动作：
+   - 选择日期范围。
+   - 选择筛选项。
+   - 点击查询/导出。
+6. 点击新出现的请求。
+7. 检查：
+   - **Request URL：** 接口路径。
+   - **Payload/Query String：** 日期、分页、筛选项、ID。
+   - **Response/Preview：** 是否包含表格数据。
+   - **Headers：** 鉴权头、Cookie、内容类型。
+8. 右键请求，选择 **Copy as cURL**。
+9. 把 cURL 保存在本地私有笔记里，再转换成脚本。
 
-Good API candidates:
+不要把生产 Cookie 粘贴到公开文档、提示词、提交或截图里。
 
-- URL includes words like `report`, `list`, `query`, `export`, `search`, `metrics`.
-- Response is JSON or CSV.
-- Parameters are readable: `startDate`, `endDate`, `page`, `size`, `channel`.
-- Replaying the request returns the same data.
+## 在 Network 里看什么
 
-Bad API candidates:
+好的 API 候选：
 
-- Response is HTML shell, not data.
-- Request requires one-time encrypted signature.
-- Payload is binary or unreadable.
-- Request only returns a task ID and needs more polling you do not understand yet.
+- URL 包含 `report`、`list`、`query`、`export`、`search`、`metrics` 等词。
+- 响应是 JSON 或 CSV。
+- 参数可读，例如 `startDate`、`endDate`、`page`、`size`、`channel`。
+- 重放请求能返回相同数据。
 
-## Convert cURL to Script
+不好的 API 候选：
 
-Example sanitized cURL:
+- 响应是 HTML 外壳，不是数据。
+- 请求需要一次性加密签名。
+- Payload 是二进制或不可读。
+- 请求只返回任务 ID，而且还需要你暂时不了解的轮询流程。
+
+## 把 cURL 转成脚本
+
+脱敏后的 cURL 示例：
 
 ```bash
 curl 'https://example.com/api/report?start=2026-07-01&end=2026-07-07' \
@@ -74,7 +74,7 @@ curl 'https://example.com/api/report?start=2026-07-01&end=2026-07-07' \
   -H 'cookie: SESSION=replace-at-runtime'
 ```
 
-Translate it into requests:
+转换成 requests：
 
 ```python
 import os
@@ -95,29 +95,29 @@ resp.raise_for_status()
 data = resp.json()
 ```
 
-Keep only necessary headers. Many copied browser headers are noise:
+只保留必要 headers。浏览器复制出来的很多 headers 是噪音：
 
-- usually keep: `authorization`, `cookie`, `content-type`, `accept`.
-- usually remove: `sec-ch-ua`, `sec-fetch-*`, `user-agent`, `referer`, tracking headers, browser-only headers.
+- 通常保留：`authorization`、`cookie`、`content-type`、`accept`。
+- 通常删除：`sec-ch-ua`、`sec-fetch-*`、`user-agent`、`referer`、追踪头、浏览器专用头。
 
-## Credential Handling
+## 凭证处理
 
-Good:
+推荐：
 
 ```bash
 export REPORT_COOKIE="paste-short-lived-cookie-here"
 python fetch_report.py --start 2026-07-01 --end 2026-07-07
 ```
 
-Bad:
+不要这样：
 
 ```python
 COOKIE = "real_cookie_committed_to_git"
 ```
 
-Never commit cookies, tokens, user IDs from production, or raw private exports.
+不要提交 Cookie、token、生产用户 ID 或原始私有导出。
 
-## Minimal Python Skeleton
+## 最小 Python 骨架
 
 ```python
 import argparse
@@ -160,20 +160,20 @@ with open(args.output, "w", newline="", encoding="utf-8") as f:
 print(f"Saved {len(rows)} rows to {args.output}")
 ```
 
-## Validation Checklist
+## 校验清单
 
-- Request URL and parameters logged.
-- Date range in response matches requested date range.
-- Row count is nonzero.
-- Required fields exist.
-- Duplicate primary keys checked.
-- Empty metrics are flagged.
-- Raw response is saved before transformation.
+- 记录了请求 URL 和参数。
+- 响应里的日期范围匹配请求日期范围。
+- 行数非零。
+- 必需字段存在。
+- 检查了重复主键。
+- 空指标被标记。
+- 转换前保存了原始响应。
 
-## When Not to Use This Path
+## 什么时候不要用这条路径
 
-- Endpoint changes every session.
-- Parameters are encrypted or signed in unknown ways.
-- Cookie expires too quickly for repeat runs.
-- Terms or permissions do not allow scripted access.
-- The task depends on visual UI state that the API does not expose.
+- 接口每个会话都变化。
+- 参数被加密或签名且机制不清楚。
+- Cookie 过期太快，无法稳定复跑。
+- 条款或权限不允许脚本访问。
+- 任务依赖 API 暴露不出来的视觉 UI 状态。

@@ -1,23 +1,22 @@
-# Content Review Gates
+# 内容审核门
 
-## Review Table
+## 审核表
 
-| Gate | Check | Reject When |
+| 审核门 | 检查内容 | 何时驳回 |
 | --- | --- | --- |
-| Fact | Claims match approved source | Price, policy, outcome, or timing is invented |
-| User value | Message helps a real user decision or action | It only serves internal task completion |
-| Repetition | Similar recent messages are checked | Same intent is repeated with new wording |
-| Channel fit | Length, image size, and CTA match the channel | Desktop poster text is sent as a chat message |
-| Visual quality | Text, object, brand, and layout are inspected | Text is garbled or product is misrepresented |
-| Frequency | Send limits and opt-out state are respected | User was already touched too often |
-| Human gate | Sensitive claims have manual review | Conversion pressure or compliance risk is high |
+| 事实 | 承诺是否匹配已批准来源 | 价格、政策、效果或时间是编造的 |
+| 用户价值 | 消息是否帮助真实用户做决策或行动 | 只服务内部任务完成 |
+| 重复 | 是否检查了近期相似消息 | 同一意图只是换说法重复触达 |
+| 渠道适配 | 长度、图片尺寸和 CTA 是否适配渠道 | 把桌面海报文案当聊天消息发送 |
+| 视觉质量 | 文字、物体、品牌和布局是否被检查 | 文字乱码或产品状态被误导呈现 |
+| 频控 | 是否遵守发送上限和退订状态 | 用户近期已被触达过多 |
+| 人工审核 | 敏感承诺是否经过人工复核 | 转化压力高或合规风险高 |
 
-## Metrics
+## 指标
 
-- Adoption rate of generated content.
-- Manual edit rate.
-- Duplicate rejection rate.
-- Reply rate.
-- Click-through or conversion contribution.
-- Complaint or opt-out rate.
-
+- 生成内容采纳率。
+- 人工修改率。
+- 重复驳回率。
+- 回复率。
+- 点击或转化贡献。
+- 投诉或退订率。

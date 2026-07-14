@@ -1,31 +1,30 @@
-# Tool Contract Template
+# 工具契约模板
 
-Use this table when turning an Agent idea into an executable workflow.
+把 Agent 想法变成可执行工作流时，用这张表。
 
-| Field | What to Specify | Common Failure |
+| 字段 | 要写清什么 | 常见失败 |
 | --- | --- | --- |
-| Tool name | Human-readable action, not only API name | Interviewers do not understand internal tool names |
-| Trigger | Exact condition for calling | Model calls it whenever it feels useful |
-| Required input | Where each parameter comes from | Model guesses missing IDs, dates, or user state |
-| Source of truth | Database, API, knowledge file, or user profile | Model treats user statements as verified facts |
-| Success condition | What proves the action happened | Text was drafted but not sent or persisted |
-| Failure fallback | Retry count, alternate route, human handoff | Infinite retry or silent failure |
-| State write | What memory/profile field changes | Future turns lose the decision state |
-| Metric | How to evaluate it | Only text quality is evaluated |
+| 工具名 | 人能理解的动作名，不只是 API 名 | 面试官或协作者看不懂内部工具名 |
+| 触发条件 | 什么时候必须调用 | 模型觉得有用就乱调用 |
+| 必需输入 | 每个参数从哪里来 | 模型猜缺失 ID、日期或用户状态 |
+| 事实源 | 数据库、API、知识文件或用户档案 | 模型把用户自述当成已验证事实 |
+| 成功条件 | 什么证明动作已经发生 | 文本被起草但没有发送或持久化 |
+| 失败兜底 | 重试次数、替代路径、转人工 | 无限重试或静默失败 |
+| 状态写入 | 哪个记忆/档案字段会变化 | 后续轮次丢失决策状态 |
+| 指标 | 如何评估 | 只评估文本质量 |
 
-## Minimum Tool Groups
+## 最小工具组
 
-- Identity/status: bind account, query status, verify eligibility.
-- Factual data: query behavior, order, learning, inventory, coupon, or price data.
-- User-visible action: send message, create link, issue coupon, change address, submit ticket.
-- Future action: create task, cancel task, reschedule task.
-- State: read memory, write memory, archive final state.
-- Risk: request human assistance, transfer ownership, stop proactive messaging.
+- 身份/状态：绑定账号、查询状态、验证资格。
+- 事实数据：查询行为、订单、学习、库存、优惠或价格数据。
+- 用户可见动作：发送消息、创建链接、发放优惠、修改地址、提交工单。
+- 未来动作：创建任务、取消任务、重排任务。
+- 状态：读取记忆、写入记忆、归档最终状态。
+- 风险：请求人工协助、转移负责人、停止主动消息。
 
-## Output Checklist
+## 输出清单
 
-- Use product-language names first, API names second.
-- Explain why code/tools own deterministic actions.
-- Keep the Agent responsible for interpretation and response synthesis.
-- Keep source-of-truth facts outside model memory unless deliberately cached.
-
+- 先用产品语言命名，再补 API 名。
+- 解释为什么确定性动作由代码/工具负责。
+- 让 Agent 负责解释、判断和回复综合。
+- 除非明确缓存，否则事实源数据不要放进模型记忆。

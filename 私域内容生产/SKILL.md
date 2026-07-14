@@ -1,70 +1,70 @@
 ---
 name: private-domain-content-production
-description: Design or review a private-domain AI content production workflow for lifecycle messages, copy variants, images, channel adaptation, review, deduplication, frequency control, and conversion support. Use when the user asks about private-domain push, AI copy generation, image generation, marketing content operations, or turning content production into a reusable workflow.
+description: 设计或审查私域 AI 内容生产工作流，覆盖生命周期消息、文案变体、图片、渠道适配、审核、去重、频控和转化支持。适用于私域推送、AI 文案生成、图片生成、营销内容运营，或把内容生产沉淀成可复用流程。
 ---
 
-# Private Domain Content Production
+# 私域内容生产
 
-Use this when AI is used to produce messages or images for private-domain operations. The lesson: content generation alone is not the product. The real workflow is goal definition, source facts, batch generation, review, deduplication, channel adaptation, frequency control, and performance feedback.
+当 AI 被用于生产私域运营消息或图片时，使用这个 skill。核心经验是：内容生成本身不是产品。真正的工作流是目标定义、事实输入、批量生成、审核、去重、渠道适配、频控和效果反馈。
 
-## Hard-Won Rules
+## 关键规则
 
-1. Do not make "filling forms" the product value. The user value is timely, relevant, non-annoying communication that helps a lifecycle goal.
-2. Copy and image generation are one content supply chain. Treat text, image, title, CTA, and channel format as one package.
-3. Use AI for variation, not unchecked publishing. Brand, fact, policy, and frequency-sensitive content needs review gates.
-4. Separate creative from deterministic operations. Let AI draft variants. Let code handle schedules, field insertion, dedupe, export, and validation.
-5. Never let generated images carry critical text unless verified. For reliable text, generate background/visuals and overlay text with code or design tooling.
-6. Do not publish private assets. Generated images, real campaign data, company templates, and user screenshots should stay out of public repos.
+1. 不要把“填表”当作产品价值。用户价值是及时、相关、不打扰且服务生命周期目标的沟通。
+2. 文案和图片生成是一条内容供应链。正文、图片、标题、CTA 和渠道格式要作为一个整体处理。
+3. 用 AI 做变体，不要让 AI 未经审核直接发布。品牌、事实、政策和频控敏感内容需要审核门。
+4. 分离创意和确定性操作。让 AI 起草变体；让代码处理排期、字段插入、去重、导出和校验。
+5. 除非经过验证，不要让生成图片承载关键文字。需要可靠文字时，生成背景/视觉，再用代码或设计工具叠字。
+6. 不要公开发布私有资产。生成图片、真实活动数据、公司模板和用户截图都不应进入公开仓库。
 
-## Workflow
+## 工作流
 
-1. Define lifecycle stage, audience segment, channel, user value, and conversion goal.
-2. Prepare grounded inputs:
-   - approved facts.
-   - product or service claims.
-   - user segment.
-   - CTA.
-   - forbidden claims.
-   - frequency limit.
-   - topic cycle.
-   - seasonal context.
-   - recent touch history.
-   - dedupe keys.
-3. Generate copy and visual concepts in batches.
-4. Review:
-   - factual accuracy.
-   - tone and brand fit.
-   - image-text consistency.
-   - duplicate or repetitive phrasing.
-   - risk of over-pushing.
-5. Adapt to channel:
-   - short DM.
-   - community post.
-   - poster/card.
-   - follow-up message.
-6. Export with a human-readable review sheet and track usage/performance.
+1. 定义生命周期阶段、用户分层、渠道、用户价值和转化目标。
+2. 准备有依据的输入：
+   - 已批准事实。
+   - 产品或服务卖点。
+   - 用户分层。
+   - CTA。
+   - 禁止承诺。
+   - 频控限制。
+   - 主题周期。
+   - 季节背景。
+   - 近期触达历史。
+   - 去重键。
+3. 批量生成文案和视觉概念。
+4. 审核：
+   - 事实准确性。
+   - 语气和品牌匹配。
+   - 图文一致性。
+   - 重复或机械化表达。
+   - 过度触达风险。
+5. 适配渠道：
+   - 短私信。
+   - 社群帖。
+   - 海报/卡片。
+   - 跟进消息。
+6. 导出人工可读的审核表，并跟踪使用和效果。
 
-## Implementation Split
+## 实现拆分
 
-For a given approved copy, explicitly split the workflow into three parts:
+对一条已批准文案，要明确拆成三部分：
 
-1. **Code-inserted facts:** user name, class name, deadline, coupon amount, activity link, teacher name, opt-out text. These should come from CRM/export tables and be inserted by code.
-2. **Rotating templates:** opening line, CTA wording, reminder angle, emoji/no-emoji style, send-time batch. These can be selected from a controlled template pool.
-3. **AI free generation:** rewrite tone, produce 3-5 variants, adapt to channel length, summarize a long source note into short copy. AI must not invent prices, deadlines, promises, or user-specific facts.
+1. **代码插入事实：** 用户名、班级名、截止时间、优惠金额、活动链接、老师名、退订文字。这些应来自 CRM/导出表，并由代码插入。
+2. **轮换模板：** 开头句、CTA 措辞、提醒角度、是否使用表情、发送批次。这些可以从受控模板池选择。
+3. **AI 自由生成：** 改写语气、生成 3-5 个变体、适配渠道长度、把长来源备注压缩成短文案。AI 不能编造价格、截止时间、承诺或用户专属事实。
 
-When writing a plan, include a field map and a generation boundary table. Do not only say "AI generates private-domain copy".
+写方案时，要包含字段映射表和生成边界表。不要只写“AI 生成私域文案”。
 
-## Pitfall Checks
+## 易错检查
 
-- Is the content useful to the recipient, or only convenient for the operator?
-- Are multiple pushes repeating the same intent?
-- Are generated images stored or committed publicly?
-- Does any visual contain broken text, wrong logo, or misleading product state?
-- Are claims traceable to approved facts?
-- Is there a frequency or opt-out rule?
+- 内容对接收者有用，还是只方便运营者？
+- 多次推送是否在重复同一个意图？
+- 生成图片是否被公开存储或提交？
+- 视觉里是否有坏字、错误标识或误导性产品状态？
+- 所有承诺是否可追溯到批准事实？
+- 是否有频控或退订规则？
 
-Read:
+读取：
 
-- `references/content-review-gates.md` for review checkpoints.
-- `references/copy-splitting-and-generation-boundaries.md` for a beginner-friendly example of how to split one source copy into code fields, rotating templates, and AI-generated variants.
-- `references/batch-generation-variables.md` for a batch-generation example that combines provided copy facts, user state, touch history, topic cycles, seasonal variables, dedupe, and frequency control.
+- `references/content-review-gates.md`：审核检查点。
+- `references/copy-splitting-and-generation-boundaries.md`：如何把一条来源文案拆成代码字段、轮换模板和 AI 生成变体。
+- `references/batch-generation-variables.md`：如何组合给定文案事实、用户状态、触达历史、主题周期、季节变量、去重和频控做批量生成。

@@ -1,33 +1,33 @@
-# AI Product Skills
+# AI 产品 Skills
 
-Reusable, public-safe Codex skills distilled from real AI product work: single-Agent tool orchestration, grounded shopping-guide/RAG, private-domain content production, safe data updates, and API-vs-browser automation design.
+这个仓库沉淀的是从真实 AI 产品工作中抽象出来的、可公开使用的 Codex skills：单 Agent 工具编排、RAG 导购、私域内容生产、安全数据更新、API 与浏览器自动化选型。
 
-This repository is intentionally sanitized. It contains reusable workflows, scripts, and checklists only. It does not include company source code, internal platform names, real user data, private prompts, access tokens, cookies, production business rules, resume drafts, case-study documents, or image assets.
+本仓库已经做过脱敏处理，只保留可复用的方法、脚本和检查清单。不包含公司源代码、内部平台名、真实用户数据、私有提示词、访问令牌、Cookie、生产业务规则、简历草稿、案例分析文档或图片素材。
 
 ## Skills
 
-| Skill | Use it for |
+| Skill | 适用场景 |
 | --- | --- |
-| `API与Playwright自动化` | Decide whether to automate with API/Cookie scripts or Playwright, then design beginner-friendly export/update scripts with validation. |
-| `RAG导购Agent` | Build grounded shopping-guide Agents that explain recommendations without fabricating facts. |
-| `单Agent工具编排` | Design single-Agent workflows constrained by stages, events, tools, TODOs, memory, and redlines. |
-| `数据更新工作流` | Run safe AI-assisted data updates with source validation, cleaning rules, pivot-table generation, scoped writes, read-back checks, and anomaly notes. |
-| `私域内容生产` | Build AI copy/image production workflows with review, dedupe, channel adaptation, and frequency control. |
+| `API与Playwright自动化` | 判断应该用 API/Cookie 脚本还是 Playwright 浏览器自动化，并设计带校验的导出、刷新、写回脚本。 |
+| `RAG导购Agent` | 构建有依据的导购 Agent，能解释推荐理由、对比选项，并避免编造事实。 |
+| `单Agent工具编排` | 设计由阶段、事件、工具、TODO、记忆和红线约束的单 Agent 工作流。 |
+| `数据更新工作流` | 执行安全的数据更新：来源校验、字段清洗、透视表生成、受控写入、回读校验和异常说明。 |
+| `私域内容生产` | 构建 AI 文案/图片生产工作流，包含审核、去重、渠道适配和频控。 |
 
-## Repository Principles
+## 仓库原则
 
-- Keep each `SKILL.md` concise and executable.
-- Put detailed checklists in `references/`.
-- Use `scripts/` only when deterministic automation is useful.
-- Keep examples generic and fictional.
-- Never publish private company details, production credentials, real screenshots, generated campaign images, or resume/case-analysis files.
+- 每个 `SKILL.md` 保持简洁、可执行。
+- 详细清单放在 `references/`。
+- 只有确定性自动化有价值时才放 `scripts/`。
+- 示例使用通用、虚构的数据。
+- 不发布公司私有细节、生产凭证、真实截图、生成的投放素材或个人案例文档。
 
-## Suggested Use
+## 建议用法
 
-Install or copy a skill folder into your Codex skills directory, then ask Codex to use the relevant skill:
+把某个 skill 目录安装或复制到 Codex skills 目录，然后让 Codex 使用对应 skill：
 
 ```text
-Use the RAG导购Agent skill to design a grounded recommendation flow for this ecommerce scenario.
+使用 RAG导购Agent skill，为这个电商场景设计一个有依据的推荐流程。
 ```
 
-For portfolio use, link this repository as evidence that AI product work has been converted into reusable, privacy-safe workflows rather than one-off notes.
+用于作品集时，可以把这个仓库作为证据：你不是只做一次性笔记，而是把 AI 产品工作沉淀成了可复用、可公开的方法。

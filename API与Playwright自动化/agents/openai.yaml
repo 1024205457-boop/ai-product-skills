@@ -1,4 +1,4 @@
 interface:
-  display_name: "API vs Playwright Automation"
-  short_description: "Choose and design API/Cookie or Playwright scripts for safe report exports, updates, and browser automation."
-  default_prompt: "Help me decide whether this automation should use an API/Cookie script or Playwright, then provide a beginner-friendly implementation path with validation checks."
+  display_name: "API 与 Playwright 自动化"
+  short_description: "判断用 API/Cookie 还是 Playwright，并设计带校验的导出、处理和写回脚本。"
+  default_prompt: "帮我判断这个流程应该用 API/Cookie 还是 Playwright 自动化，并给出原始导出、字段校验、数据处理和回读验证方案。"

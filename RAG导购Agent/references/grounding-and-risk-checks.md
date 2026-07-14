@@ -1,36 +1,35 @@
-# Grounding and Risk Checks
+# 事实依据和风险检查
 
-## Retrieval Fields
+## 检索字段
 
-| Field | Why It Matters | Never Guess |
+| 字段 | 为什么重要 | 绝不能猜 |
 | --- | --- | --- |
-| Product identity | Prevents mixing variants | Brand, exact model, SKU, version |
-| Full facts | Enables screening | Full ingredient list, specs, curriculum, service terms |
-| Transaction facts | High hallucination risk | Price, coupon, inventory, purchase link |
-| Suitability facts | Drives personalization | Skin type, age, use case, device, learning level |
-| Policy facts | Legal and trust risk | Refund, warranty, renewal, safety warnings |
-| Source metadata | Enables confidence | Source, update time, completeness |
+| 商品身份 | 避免混淆不同版本 | 品牌、精确型号、SKU、版本 |
+| 完整事实 | 支持筛查 | 完整成分、规格、课程、服务条款 |
+| 交易事实 | 幻觉风险高 | 价格、优惠、库存、购买链接 |
+| 适配事实 | 支持个性化 | 肤质、年龄、使用场景、设备、学习水平 |
+| 政策事实 | 涉及法律和信任风险 | 退款、保修、续费、安全提示 |
+| 来源元数据 | 支持置信度判断 | 来源、更新时间、完整度 |
 
-## Decision Output
+## 决策输出
 
-Use a compact structure:
+使用紧凑结构：
 
-| Item | Match Reason | Risk / Caveat | Best For | Avoid If | Source Completeness |
+| 商品 | 匹配理由 | 风险/注意点 | 最适合 | 不适合 | 来源完整度 |
 | --- | --- | --- | --- | --- | --- |
 
-Then add:
+然后补充：
 
-- Why the top choice fits.
-- What trade-off the user is accepting.
-- What must be verified before purchase.
+- 为什么首选项适合。
+- 用户接受了什么取舍。
+- 购买前还必须核实什么。
 
-## Evaluation Items
+## 评估项
 
-- Need parsing accuracy.
-- Product match accuracy.
-- Risk recall.
-- Fact grounding.
-- Missing-information handling.
-- Comparison usefulness.
-- Unsupported claim rate.
-
+- 需求解析准确率。
+- 商品匹配准确率。
+- 风险召回。
+- 事实依据检查。
+- 缺失信息处理。
+- 对比是否有用。
+- 无依据声明比例。

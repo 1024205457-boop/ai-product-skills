@@ -1,52 +1,51 @@
 ---
 name: rag-shopping-guide-agent
-description: Design or review an AI shopping-guide Agent that turns vague user needs into grounded product recommendations, comparisons, risk checks, and decision support without fabricating prices, links, inventory, ingredients, policies, or claims. Use for ecommerce guide, AI search, product recommendation, RAG QA, ingredient or spec screening, and JD-style AI search scenarios.
+description: 设计或审查 AI 导购 Agent，把模糊需求转成有依据的商品推荐、对比、风险检查和决策支持，并避免编造价格、链接、库存、成分、政策或宣传承诺。适用于电商导购、AI 搜索、商品推荐、RAG 问答、成分/规格筛查和类京东 AI 搜索场景。
 ---
 
-# RAG Shopping Guide Agent
+# RAG 导购 Agent
 
-Use this when the user wants an AI guide that helps people decide what to buy. The lesson: shopping guidance is not "recommend popular products". It must translate fuzzy needs into decision criteria, retrieve grounded product facts, explain trade-offs, and refuse to fill missing facts with model guesses.
+当用户想做一个帮助消费者决定买什么的 AI 导购时，使用这个 skill。核心经验是：导购不是“推荐热门商品”。它必须把模糊需求翻译成决策标准，检索有依据的商品事实，解释取舍，并拒绝用模型猜测补齐缺失事实。
 
-## Hard-Won Rules
+## 关键规则
 
-1. Need understanding is broader than keyword matching. Capture use case, user type, constraints, risk factors, and decision anxiety.
-2. Retrieve before judging. Product names, ingredients, specs, prices, stock, coupons, policies, and links must come from approved sources.
-3. Say "information insufficient" when the source is incomplete. Do not infer a full ingredient list, latest price, discount, or availability.
-4. Give decision evidence, not only product names. Explain match reason, risk, alternatives, and who should avoid the item.
-5. Separate recommendation from transaction facts. A model can explain why an item fits; it should not invent purchase links or promotions.
-6. Evaluate recall of risks, not just answer fluency. A beautiful recommendation that misses a safety constraint is a bad answer.
+1. 需求理解不只是关键词匹配。要捕捉使用场景、用户类型、限制条件、风险因素和决策焦虑。
+2. 先检索，再判断。商品名、成分、规格、价格、库存、优惠、政策和链接必须来自可信来源。
+3. 来源不完整时要说“信息不足”。不要推断完整成分、最新价格、优惠或可售状态。
+4. 给决策证据，不只给商品名。解释匹配原因、风险、替代选项，以及哪些人不适合。
+5. 区分推荐理由和交易事实。模型可以解释为什么适合，但不能编造购买链接或促销。
+6. 评估风险召回，而不只看回答流畅度。漂亮但漏掉安全约束的推荐是失败回答。
 
-## Workflow
+## 工作流
 
-1. Parse the user request into:
-   - desired outcome.
-   - user profile or scenario.
-   - constraints and taboos.
-   - stated or implied risk factors.
-   - missing but necessary clarifications.
-2. Build retrieval queries for product facts and domain facts.
-3. Retrieve from knowledge base, API, search, or database.
-4. Screen each candidate against:
-   - must-have criteria.
-   - exclusion criteria.
-   - risk ingredients/specs/policies.
-   - source freshness and completeness.
-5. Produce a structured comparison:
-   - recommendation.
-   - evidence from retrieved facts.
-   - risks and unsuitable groups.
-   - when to choose an alternative.
-   - what information is missing.
-6. Add a final grounding check before output.
+1. 把用户请求解析为：
+   - 期望结果。
+   - 用户画像或使用场景。
+   - 限制和禁忌。
+   - 明示或暗示的风险因素。
+   - 缺失但必要的澄清问题。
+2. 构造商品事实和领域事实的检索查询。
+3. 从知识库、API、搜索或数据库检索。
+4. 对每个候选项检查：
+   - 必需条件。
+   - 排除条件。
+   - 风险成分、规格或政策。
+   - 来源新鲜度和完整度。
+5. 输出结构化对比：
+   - 推荐结果。
+   - 来自检索事实的证据。
+   - 风险和不适合人群。
+   - 什么情况下应选择替代项。
+   - 哪些信息仍然缺失。
+6. 输出前做最终事实依据检查。
 
-## Pitfall Checks
+## 易错检查
 
-- Did the Agent recommend without a complete source record?
-- Did it quote a price, stock state, coupon, or link without a source?
-- Did it treat "popular" as "suitable"?
-- Did it ignore user-specific constraints such as allergy, pregnancy, sensitivity, age, device, or budget?
-- Did it give a single answer when comparison is needed?
-- Did it bury risk warnings after persuasive copy?
+- Agent 是否在没有完整来源记录时就推荐？
+- 是否在没有来源时引用价格、库存、优惠或链接？
+- 是否把“热门”当成“适合”？
+- 是否忽略过敏、孕期、敏感、年龄、设备或预算等用户约束？
+- 需要对比时，是否只给了一个答案？
+- 风险提示是否被埋在营销话术后面？
 
-Read `references/grounding-and-risk-checks.md` when defining retrieval fields, risk categories, and evaluation items.
-
+定义检索字段、风险分类和评估项时，读取 `references/grounding-and-risk-checks.md`。

@@ -1,28 +1,28 @@
-# Batch Generation Variables
+# 批量生成变量
 
-Use this reference when the goal is: "Given approved copy information, generate private-domain messages in batches while respecting topic cycles, seasonal context, dedupe, and frequency control."
+当目标是“基于已批准文案信息，批量生成私域消息，同时遵守主题周期、季节背景、去重和频控”时，使用这个参考。
 
-Do not hardcode real private data in the skill. Use generic tables like:
+不要在技能里硬编码真实私域数据。使用通用表：
 
-- user state table.
-- touch history table.
-- campaign facts table.
-- topic cycle table.
-- seasonal context table.
-- template pool.
+- 用户状态表。
+- 触达历史表。
+- 活动事实表。
+- 主题周期表。
+- 季节背景表。
+- 模板池。
 
-## 1. Input Tables
+## 1. 输入表
 
-### Campaign Facts
+### 活动事实
 
-These are approved facts. AI can rewrite them, but cannot invent new facts.
+这些是已批准事实。AI 可以改写，但不能编造新事实。
 
 ```csv
 campaign_id,product_name,core_offer,deadline,cta,link,forbidden_claims
 C001,数学思维直播课,本周可预约一节体验课,2026-07-15,点击预约,https://example.com/book,"一定提分;仅剩3席;名师保过"
 ```
 
-### User State
+### 用户状态
 
 ```csv
 user_id,parent_name,student_grade,segment,intent_level,risk_flag,weakness_tag,last_summary
@@ -31,7 +31,7 @@ U002,乐乐爸爸,二年级,quiet_user,medium,1,计算粗心,"近期触达较多
 U003,安安妈妈,一年级,active_parent,high,0,应用题理解,"家长主动问过暑期课安排"
 ```
 
-### Touch History
+### 触达历史
 
 ```csv
 user_id,touch_date,channel,topic_key,message_hash,result
@@ -41,9 +41,9 @@ U002,2026-07-10,wechat,renewal,hash_003,complaint
 U003,2026-07-05,community,summer_plan,hash_004,replied
 ```
 
-### Topic Cycle
+### 主题周期
 
-Use topic cycles to avoid pushing the same angle every day.
+用主题周期避免每天推同一个角度。
 
 ```csv
 week,topic_key,angle,priority
@@ -53,9 +53,9 @@ week,topic_key,angle,priority
 2026-W29,practice,课后练习,2
 ```
 
-### Seasonal Context
+### 季节背景
 
-Use seasonal variables for timing and relevance, not fake urgency.
+季节变量用于增强相关性，不用于制造虚假紧迫感。
 
 ```csv
 date_range,season_key,usable_angle,avoid_angle
@@ -63,41 +63,41 @@ date_range,season_key,usable_angle,avoid_angle
 2026-08-20/2026-08-31,back_to_school,开学前查漏补缺,不要承诺开学排名提升
 ```
 
-## 2. Variable Ownership
+## 2. 变量归属
 
-| Variable | Source | Owner | Example |
+| 变量 | 来源 | 负责人 | 示例 |
 | --- | --- | --- | --- |
-| parent name | user state | code insert | 小雨妈妈 |
-| grade | user state | code insert | 一年级 |
-| weakness tag | user state | code insert | 图形找规律 |
-| offer/deadline/link | campaign facts | code insert | 2026-07-15 |
-| topic angle | topic cycle | deterministic selection | 薄弱点补强 |
-| seasonal angle | seasonal context | deterministic selection | 暑期刚开始 |
-| opening/CTA wording | template pool | rotation | 可以先帮孩子占一个体验名额 |
-| final tone | AI | controlled rewrite | 温和、短、不焦虑 |
+| 家长称呼 | 用户状态 | 代码插入 | 小雨妈妈 |
+| 年级 | 用户状态 | 代码插入 | 一年级 |
+| 薄弱点标签 | 用户状态 | 代码插入 | 图形找规律 |
+| 权益/截止时间/链接 | 活动事实 | 代码插入 | 2026-07-15 |
+| 主题角度 | 主题周期 | 确定性选择 | 薄弱点补强 |
+| 季节角度 | 季节背景 | 确定性选择 | 暑期刚开始 |
+| opening/CTA wording | 模板池 | 轮换 | 可以先帮孩子占一个体验名额 |
+| final tone | AI | 受控改写 | 温和、短、不焦虑 |
 
-## 3. Batch Generation Logic
+## 3. 批量生成逻辑
 
 ```text
 for each user:
-  1. read user state.
-  2. read campaign facts.
-  3. choose topic angle from current week.
-  4. choose seasonal angle from current date.
-  5. check recent touch history:
-     - skip if same topic sent in last N days.
-     - skip or downgrade if user has complaint/risk flag.
-     - avoid same message_hash.
-  6. render fixed fields by code.
-  7. choose one template from rotation pool.
-  8. ask AI to rewrite within strict boundaries.
-  9. run review gates.
-  10. export review sheet, not direct-send by default.
+  1. 读取用户状态。
+  2. 读取活动事实。
+  3. 从当前周选择主题角度。
+  4. 从当前日期选择季节角度。
+  5. 检查近期触达历史：
+     - 最近 N 天发过同主题则跳过。
+     - 用户有投诉/风险标记则跳过或降级。
+     - 避免相同 message_hash。
+  6. 用代码渲染固定字段。
+  7. 从轮换模板池选择一个模板。
+  8. 要求 AI 在严格边界内改写。
+  9. 运行审核门。
+  10. 导出审核表，默认不直接发送。
 ```
 
-## 4. Dedupe and Frequency Rules
+## 4. 去重和频控规则
 
-Examples:
+示例：
 
 ```json
 {
@@ -109,9 +109,9 @@ Examples:
 }
 ```
 
-Dedupe should be handled by code, not by the model.
+去重应由代码处理，不应由模型决定。
 
-## 5. AI Prompt Boundary
+## 5. AI 提示词边界
 
 ```text
 你是私域文案改写助手。你只能基于以下字段生成，不得新增价格、名额、截止时间、学习诊断、承诺效果。
@@ -138,29 +138,28 @@ Dedupe should be handled by code, not by the model.
 不能出现：{{forbidden_claims}}。
 ```
 
-## 6. Review Sheet Output
+## 6. 审核表输出
 
-Batch generation should export a review sheet:
+批量生成应导出审核表：
 
 | user_id | topic_key | seasonal_angle | generated_text | dedupe_status | frequency_status | risk_note | reviewer_decision |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| U001 | math_live | summer_start | ... | pass | pass | none | approve |
-| U002 | math_live | summer_start | skipped | same topic recently | risk user | complaint within 7 days | reject |
+| U001 | 数学直播 | 暑期开始 | ... | 通过 | 通过 | 无 | 通过 |
+| U002 | 数学直播 | 暑期开始 | 已跳过 | 近期同主题 | 风险用户 | 7 天内投诉 | 驳回 |
 
-## 7. What AI Should Not Control
+## 7. AI 不应控制什么
 
-AI should not decide:
+AI 不应决定：
 
-- who is eligible to receive a push.
-- whether frequency rules can be bypassed.
-- whether a complaint user can still be pushed.
-- whether an unapproved offer can be mentioned.
-- the final send action.
+- 谁有资格接收推送。
+- 频控规则是否可以绕过。
+- 投诉用户是否还能继续触达。
+- 是否可以提及未经批准的权益。
+- 最终发送动作。
 
-AI can help:
+AI 可以帮助：
 
-- rewrite approved information.
-- create controlled variants.
-- adapt copy to channel length.
-- summarize why a user was skipped, based on rule outputs.
-
+- 改写已批准信息。
+- 生成受控变体。
+- 适配渠道长度。
+- 基于规则输出，总结某个用户为什么被跳过。
