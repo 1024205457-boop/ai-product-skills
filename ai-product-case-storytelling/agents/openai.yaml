@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI 产品案例表达"
+  short_description: "把 AI 产品项目沉淀成案例、指标和追问"
+  default_prompt: "Use $ai-product-case-storytelling to turn this AI product project into a portfolio-ready case with metrics and interview Q&A."
